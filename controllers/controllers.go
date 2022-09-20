@@ -21,3 +21,11 @@ func AboutUsPage(r *gin.Context) {
 func ContactUsPage(r *gin.Context) {
 	r.HTML(http.StatusOK, "contactus.html", nil)
 }
+
+func LoginPage(r *gin.Context) {
+	r.HTML(http.StatusOK, "login.html", nil)
+}
+
+func RegisterPage(r *gin.Context) {
+	r.HTML(http.StatusOK, "register.html", nil)
+}

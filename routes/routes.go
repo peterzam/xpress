@@ -16,9 +16,12 @@ func Handlers() *gin.Engine {
 
 	// Routes
 	r.NoRoute(controllers.NotFoundPage)
+
 	r.GET("/", controllers.HomePage)
 	r.GET("/aboutus", controllers.AboutUsPage)
 	r.GET("/contactus", controllers.ContactUsPage)
+	r.GET("/login", controllers.LoginPage)
+	r.GET("/register", controllers.RegisterPage)
 
 	return r
 }
