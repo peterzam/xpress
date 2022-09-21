@@ -8,6 +8,6 @@ CREATE TABLE User(
     user_active BOOLEAN
 );
 
-INSERT INTO User (user_name, user_password, user_role) VALUES
+INSERT INTO User (user_name, user_password, user_role, user_active) VALUES
 ('admin','21232f297a57a5a743894a0e4a801fc3','admin',true),
 ('user','ee11cbb19052e40b07aac0ca060c23ee','user',false);
