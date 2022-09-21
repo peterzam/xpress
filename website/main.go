@@ -2,19 +2,17 @@ package main
 
 import (
 	"Xpress/routes"
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	e := godotenv.Load("../.env")
 	r := routes.Handlers()
 
-	if e != nil {
-		log.Fatal("Error Loading .env file")
+	if godotenv.Load("../.env") != nil {
+		panic("Error Loading .env file")
 	}
-	port := os.Getenv("SERVER_PORT")
+	port := os.Getenv("WEB_PORT")
 	r.Run(":" + port)
 }
