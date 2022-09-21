@@ -6,8 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NotFoundPage(r *gin.Context) {
-	r.HTML(http.StatusNotFound, "notfound.html", nil)
+func Err_NotFound(r *gin.Context) {
+	r.HTML(http.StatusNotFound, "err_notfound.html", nil)
+}
+
+func Err_Internal(r *gin.Context) {
+	r.HTML(http.StatusInternalServerError, "err_internal.html", nil)
 }
 
 func HomePage(r *gin.Context) {
