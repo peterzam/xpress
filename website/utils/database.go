@@ -2,24 +2,22 @@ package utils
 
 import (
 	"fmt"
-	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func ConnectDB() *gorm.DB {
+var DB *gorm.DB
 
-	user := os.Getenv("MYSQL_USER")
-	password := os.Getenv("MYSQL_PASSWORD")
-	database := os.Getenv("MYSQL_DATABASE")
-	host := os.Getenv("MYSQL_HOST")
+func ConnectDB() error {
+	user := GetEnv("MYSQL_USER")
+	password := GetEnv("MYSQL_PASSWORD")
+	database := GetEnv("MYSQL_DATABASE")
+	host := GetEnv("MYSQL_HOST")
+	port := GetEnv("MYSQL_PORT")
+	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, password, host, port, database)
 
-	dbURI := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", host, user, database, password)
 	db, err := gorm.Open(mysql.Open(dbURI), &gorm.Config{})
-	if err != nil {
-		panic(err)
-	}
-
-	return db
+	DB = db
+	return err
 }
