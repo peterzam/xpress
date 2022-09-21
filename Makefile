@@ -5,12 +5,12 @@ down:
 	db-down server-down
 
 db-up:
-	podman run -it --rm \
+	podman run -itd --rm \
 	--name xpress-db \
 	--userns keep-id \
 	--env-file .env \
 	--volume ./db:/var/lib/mysql \
-	--volume ./init-db.sql:/docker-entrypoint-initdb.d/mysql-init.sql \
+	--volume ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql \
 	-p 3306:3306 \
 	mariadb
 
@@ -20,3 +20,7 @@ db-down:
 server-up:
 
 server-down:
+
+clean:
+	rm -rf db/*
+	clear
