@@ -60,8 +60,9 @@ func DashboardPage() gin.HandlerFunc {
 		user_name := session.Get("user_name")
 
 		c.HTML(http.StatusOK, "dashboard.html", gin.H{
-			"user_name": user_name,
+			"button_text": "Logout",
+			"button_link": "logout",
+			"user_name":   user_name,
 		})
-		c.Set("log_button", "Logout")
 	}
 }

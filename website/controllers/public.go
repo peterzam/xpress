@@ -1,49 +1,40 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
 func Err_NotFound() gin.HandlerFunc {
-	return func(r *gin.Context) {
-		r.HTML(http.StatusNotFound, "err_notfound.html", nil)
+	return func(c *gin.Context) {
+		c.Redirect(http.StatusTemporaryRedirect, "/404")
 	}
 }
 
-func Err_Internal() gin.HandlerFunc {
-	return func(r *gin.Context) {
-		r.HTML(http.StatusInternalServerError, "err_internal.html", nil)
-	}
-}
+func StaticPages() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Login button
+		var header = gin.H{
+			"button_text": "Login",
+			"button_link": "login",
+		}
+		// Check session if already logged in
+		session := sessions.Default(c)
+		if session.Get("user_name") != nil {
+			header = gin.H{
+				"button_text": "Dashboard",
+				"button_link": "dashboard",
+			}
+		}
 
-func HomePage() gin.HandlerFunc {
-	return func(r *gin.Context) {
-		r.HTML(http.StatusOK, "home.html", nil)
-	}
-}
-
-func AboutUsPage() gin.HandlerFunc {
-	return func(r *gin.Context) {
-		r.HTML(http.StatusOK, "aboutus.html", nil)
-	}
-}
-
-func ContactUsPage() gin.HandlerFunc {
-	return func(r *gin.Context) {
-		r.HTML(http.StatusOK, "contactus.html", nil)
-	}
-}
-
-func LoginPage() gin.HandlerFunc {
-	return func(r *gin.Context) {
-		r.HTML(http.StatusOK, "login.html", nil)
-	}
-}
-
-func RegisterPage() gin.HandlerFunc {
-	return func(r *gin.Context) {
-		r.HTML(http.StatusOK, "register.html", nil)
+		// Controlled route for "/" -> "home.html"
+		if c.Request.RequestURI == "/" {
+			c.HTML(http.StatusOK, "home.html", header)
+		} else {
+			c.HTML(http.StatusOK, fmt.Sprintf("%s.html", c.Request.RequestURI[1:]), header)
+		}
 	}
 }

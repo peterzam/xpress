@@ -2,6 +2,7 @@ package routes
 
 import (
 	"Xpress/controllers"
+	"Xpress/utils"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -17,7 +18,7 @@ func Handlers() *gin.Engine {
 	r.Static("assets", "static/assets")
 	r.StaticFile("favicon.ico", "static/assets/favicon.ico")
 
-	r.Use(sessions.Sessions("session", cookie.NewStore([]byte("globals.Secret"))))
+	r.Use(sessions.Sessions("session", cookie.NewStore([]byte(utils.GetEnv("TOKEN_SECRET")))))
 
 	// Routes
 	/// No Routes
@@ -26,7 +27,7 @@ func Handlers() *gin.Engine {
 	/// Public Routes
 	PublicRoutes(r.Group("/"))
 
-	/// Public Routes
+	/// Private Routes
 	private := r.Group("/")
 	private.Use(controllers.AuthRequired())
 	PrivateRoutes(private)
@@ -36,15 +37,13 @@ func Handlers() *gin.Engine {
 
 func PublicRoutes(r *gin.RouterGroup) {
 
-	r.GET("/404", controllers.Err_NotFound())
-	r.GET("/503", controllers.Err_Internal())
-
-	r.GET("/", controllers.HomePage())
-	r.GET("/aboutus", controllers.AboutUsPage())
-	r.GET("/contactus", controllers.ContactUsPage())
-	r.GET("/register", controllers.RegisterPage())
-
-	r.GET("/login", controllers.LoginPage())
+	r.GET("/404", controllers.StaticPages())
+	r.GET("/503", controllers.StaticPages())
+	r.GET("/", controllers.StaticPages())
+	r.GET("/aboutus", controllers.StaticPages())
+	r.GET("/contactus", controllers.StaticPages())
+	r.GET("/register", controllers.StaticPages())
+	r.GET("/login", controllers.StaticPages())
 	r.POST("/login", controllers.LoginForm())
 }
 
