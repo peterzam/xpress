@@ -10,34 +10,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func LoginForm() gin.HandlerFunc {
+func DashboardPage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
-		user_name := c.PostForm("user_name")
-		user_password := c.PostForm("user_password")
-		var auth_user models.User
-		err := utils.DB.Where("name = ?", user_name).First(&auth_user).Error
-		if err != nil {
-			c.HTML(http.StatusOK, "login.html", gin.H{
-				"user_name_status": "is-invalid",
-			})
-			return
-		}
-		if utils.GetMD5Hash(user_password) != auth_user.Password {
-			c.HTML(http.StatusOK, "login.html", gin.H{
-				"user_password_status": "is-invalid",
-			})
-			return
-		}
-		session.Set("user_name", auth_user.Name)
-		session.Set("user_role", auth_user.Role)
-		session.Set("user_active", auth_user.Active)
-		if err := session.Save(); err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+		user_name := session.Get("user_name")
 
-			return
-		}
-		c.Redirect(http.StatusMovedPermanently, "/dashboard")
+		c.HTML(http.StatusOK, "dashboard.html", gin.H{
+			"button_text": "Logout",
+			"button_link": "logout",
+			"user_name":   user_name,
+		})
 	}
 }
 
@@ -54,15 +36,35 @@ func Logout() gin.HandlerFunc {
 	}
 }
 
-func DashboardPage() gin.HandlerFunc {
+func LoginForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
-		user_name := session.Get("user_name")
+		user_phone := c.PostForm("user_phone")
+		user_password := c.PostForm("user_password")
+		var auth_user models.User
+		err := utils.DB.Where("phone = ?", user_phone).First(&auth_user).Error
+		if err != nil {
+			c.HTML(http.StatusOK, "login.html", gin.H{
+				"user_phone_status": "is-invalid",
+			})
+			return
+		}
+		if utils.GetMD5Hash(user_password) != auth_user.Password {
+			c.HTML(http.StatusOK, "login.html", gin.H{
+				"user_password_status": "is-invalid",
+			})
+			return
+		}
+		session.Set("user_id", auth_user.Id)
+		session.Set("user_phone", auth_user.Phone)
+		session.Set("user_name", auth_user.Name)
+		session.Set("user_role", auth_user.Role)
+		session.Set("user_active", auth_user.Active)
+		if err := session.Save(); err != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
 
-		c.HTML(http.StatusOK, "dashboard.html", gin.H{
-			"button_text": "Logout",
-			"button_link": "logout",
-			"user_name":   user_name,
-		})
+			return
+		}
+		c.Redirect(http.StatusMovedPermanently, "/dashboard")
 	}
 }

@@ -23,7 +23,7 @@ func StaticPages() gin.HandlerFunc {
 		}
 		// Check session if already logged in
 		session := sessions.Default(c)
-		if session.Get("user_name") != nil {
+		if session.Get("user_id") != nil {
 			header = gin.H{
 				"button_text": "Dashboard",
 				"button_link": "dashboard",
