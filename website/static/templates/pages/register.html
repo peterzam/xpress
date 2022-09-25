@@ -24,7 +24,7 @@
                     <input
                       id="name"
                       type="text"
-                      class="form-control"
+                      class="form-control {{ .user_name_status }}"
                       name="name"
                       value=""
                       required
@@ -39,13 +39,28 @@
                     >
                     <input
                       id="phone"
-                      type="phone"
-                      class="form-control"
+                      type="tel"
+                      class="form-control {{ .user_phone_status }}"
                       name="phone"
                       value=""
                       required
                     />
-                    <div class="invalid-feedback">Email is invalid</div>
+                    <div class="invalid-feedback">Phone Number is required</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="mb-2 text-muted" for="address"
+                      >Address</label
+                    >
+                    <input
+                      id="address"
+                      type="text"
+                      class="form-control {{ .user_address_status }}"
+                      name="address"
+                      value=""
+                      required
+                    />
+                    <div class="invalid-feedback">Address is required</div>
                   </div>
 
                   <div class="mb-3">
@@ -55,7 +70,7 @@
                     <input
                       id="password"
                       type="password"
-                      class="form-control"
+                      class="form-control {{ .user_password_status }}"
                       name="password"
                       required
                     />

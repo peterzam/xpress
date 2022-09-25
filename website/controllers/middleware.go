@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -13,7 +12,6 @@ func AuthRequired() gin.HandlerFunc {
 		session := sessions.Default(c)
 		user := session.Get("user_id")
 		if user == nil {
-			log.Println("User not logged in")
 			c.Redirect(http.StatusMovedPermanently, "/login")
 			c.Abort()
 			return

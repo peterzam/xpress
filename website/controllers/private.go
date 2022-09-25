@@ -42,17 +42,20 @@ func LoginForm() gin.HandlerFunc {
 		user_phone := c.PostForm("user_phone")
 		user_password := c.PostForm("user_password")
 		var auth_user models.User
+
+		var invalid_login = gin.H{
+			"button_text":       "Login",
+			"button_link":       "login",
+			"user_phone_status": "is-invalid",
+		}
+
 		err := utils.DB.Where("phone = ?", user_phone).First(&auth_user).Error
 		if err != nil {
-			c.HTML(http.StatusOK, "login.html", gin.H{
-				"user_phone_status": "is-invalid",
-			})
+			c.HTML(http.StatusOK, "login.html", invalid_login)
 			return
 		}
 		if utils.GetMD5Hash(user_password) != auth_user.Password {
-			c.HTML(http.StatusOK, "login.html", gin.H{
-				"user_password_status": "is-invalid",
-			})
+			c.HTML(http.StatusOK, "login.html", invalid_login)
 			return
 		}
 		session.Set("user_id", auth_user.Id)
@@ -62,7 +65,6 @@ func LoginForm() gin.HandlerFunc {
 		session.Set("user_active", auth_user.Active)
 		if err := session.Save(); err != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/503")
-
 			return
 		}
 		c.Redirect(http.StatusMovedPermanently, "/dashboard")
