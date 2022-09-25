@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Err_NotFound() gin.HandlerFunc {
+func NoRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Redirect(http.StatusTemporaryRedirect, "/404")
 	}

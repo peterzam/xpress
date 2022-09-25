@@ -33,7 +33,7 @@ func LoginForm() gin.HandlerFunc {
 		session.Set("user_role", auth_user.Role)
 		session.Set("user_active", auth_user.Active)
 		if err := session.Save(); err != nil {
-			c.HTML(http.StatusInternalServerError, "err_internal.html", nil)
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
 
 			return
 		}

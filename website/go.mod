@@ -3,7 +3,6 @@ module Xpress
 go 1.19
 
 require (
-	github.com/gin-contrib/multitemplate v0.0.0-20220829131020-8c2a8441bc2b
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.8.1
 	github.com/spf13/viper v1.13.0

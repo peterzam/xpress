@@ -22,8 +22,7 @@ func Handlers() *gin.Engine {
 
 	// Routes
 	/// No Routes
-	r.NoRoute(controllers.Err_NotFound())
-
+	r.NoRoute(controllers.NoRoute())
 	/// Public Routes
 	PublicRoutes(r.Group("/"))
 
