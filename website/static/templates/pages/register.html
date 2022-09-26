@@ -1,98 +1,85 @@
 {{ template "head" . }}
-    <section class="h-100">
-      <div class="container h-100">
-        <div class="row justify-content-sm-center h-100">
-          <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-            <div class="text-center my-5">
-              <img
-                src="./assets/logo.png"
-                alt="logo"
-                width="100"
-              />
-            </div>
-            <div class="card shadow-lg">
-              <div class="card-body p-5">
-                <h1 class="fs-4 card-title fw-bold mb-4">Register</h1>
-                <form
-                  method="POST"
-                  class="needs-validation"
-                  novalidate=""
-                  autocomplete="off"
+<section class="h-100">
+  <div class="container h-100">
+    <div class="row justify-content-sm-center h-100">
+      <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+        <div class="text-center my-5">
+          <img src="./assets/logo.png" alt="logo" width="100" />
+        </div>
+        <div class="card shadow-lg">
+          <div class="card-body p-5">
+            <h1 class="fs-4 card-title fw-bold mb-4">Register</h1>
+            <form
+              method="POST"
+              novalidate=""
+              autocomplete="off"
+            >
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="name">Name</label>
+                <input
+                  id="user_name"
+                  type="text"
+                  class="form-control"
+                  name="user_name"
+                  value=""
+                  required
+                  autofocus
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="email">Phone Number</label>
+                <input
+                  id="user_phone"
+                  type="tel"
+                  class="form-control"
+                  name="user_phone"
+                  value=""
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="address">Address</label>
+                <input
+                  id="user_address"
+                  type="text"
+                  class="form-control"
+                  name="user_address"
+                  value=""
+                  required
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="password"
+                  >Password <i>(minimum 8 characters)</i></label
                 >
-                  <div class="mb-3">
-                    <label class="mb-2 text-muted" for="name">Name</label>
-                    <input
-                      id="name"
-                      type="text"
-                      class="form-control {{ .user_name_status }}"
-                      name="name"
-                      value=""
-                      required
-                      autofocus
-                    />
-                    <div class="invalid-feedback">Name is required</div>
-                  </div>
-
-                  <div class="mb-3">
-                    <label class="mb-2 text-muted" for="email"
-                      >Phone Number</label
-                    >
-                    <input
-                      id="phone"
-                      type="tel"
-                      class="form-control {{ .user_phone_status }}"
-                      name="phone"
-                      value=""
-                      required
-                    />
-                    <div class="invalid-feedback">Phone Number is required</div>
-                  </div>
-
-                  <div class="mb-3">
-                    <label class="mb-2 text-muted" for="address"
-                      >Address</label
-                    >
-                    <input
-                      id="address"
-                      type="text"
-                      class="form-control {{ .user_address_status }}"
-                      name="address"
-                      value=""
-                      required
-                    />
-                    <div class="invalid-feedback">Address is required</div>
-                  </div>
-
-                  <div class="mb-3">
-                    <label class="mb-2 text-muted" for="password"
-                      >Password</label
-                    >
-                    <input
-                      id="password"
-                      type="password"
-                      class="form-control {{ .user_password_status }}"
-                      name="password"
-                      required
-                    />
-                    <div class="invalid-feedback">Password is required</div>
-                  </div>
-
-                  <div class="align-items-center d-flex">
-                    <button type="submit" class="btn btn-primary ms-auto">
-                      Register
-                    </button>
-                  </div>
-                </form>
+                <input
+                  id="user_password"
+                  type="password"
+                  class="form-control"
+                  name="user_password"
+                  required
+                />
               </div>
-              <div class="card-footer py-3 border-0">
-                <div class="text-center">
-                  Already have an account?
-                  <a href="/login" class="text-dark">Login</a>
-                </div>
+              <i class="register-response">{{ .user_register_status_text }}</i>
+              <div class="align-items-center d-flex">
+                <button type="submit" class="btn btn-primary ms-auto">
+                  Register
+                </button>
               </div>
+            </form>
+          </div>
+          <div class="card-footer py-3 border-0">
+            <div class="text-center">
+              Already have an account?
+              <a href="/login" class="text-dark">Login</a>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 {{ template "foot" }}

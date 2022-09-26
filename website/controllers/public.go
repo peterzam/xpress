@@ -10,21 +10,21 @@ import (
 
 func NoRoute() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Redirect(http.StatusTemporaryRedirect, "/404")
+		c.Redirect(http.StatusMovedPermanently, "/404")
 	}
 }
 
 func StaticPages() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Login button
-		var header = gin.H{
+		var header = &gin.H{
 			"button_text": "Login",
 			"button_link": "login",
 		}
 		// Check session if already logged in
 		session := sessions.Default(c)
 		if session.Get("user_id") != nil {
-			header = gin.H{
+			header = &gin.H{
 				"button_text": "Dashboard",
 				"button_link": "dashboard",
 			}

@@ -45,6 +45,7 @@ func PublicRoutes(r *gin.RouterGroup) {
 	r.GET("/register", controllers.StaticPages())
 	r.GET("/login", controllers.StaticPages())
 	r.POST("/login", controllers.LoginForm())
+	r.POST("/register", controllers.RegisterForm())
 }
 
 func PrivateRoutes(r *gin.RouterGroup) {
