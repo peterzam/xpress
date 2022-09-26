@@ -11,11 +11,11 @@
             <h1 class="fs-4 card-title fw-bold mb-4">Register</h1>
             <form
               method="POST"
-              novalidate=""
+              needs-validation
               autocomplete="off"
             >
               <div class="mb-3">
-                <label class="mb-2 text-muted" for="name">Name</label>
+                <label class="mb-2 text-muted" for="user_name">Name</label>
                 <input
                   id="user_name"
                   type="text"
@@ -28,7 +28,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="mb-2 text-muted" for="email">Phone Number</label>
+                <label class="mb-2 text-muted" for="user_phone">Phone Number</label>
                 <input
                   id="user_phone"
                   type="tel"
@@ -40,7 +40,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="mb-2 text-muted" for="address">Address</label>
+                <label class="mb-2 text-muted" for="user_address">Address</label>
                 <input
                   id="user_address"
                   type="text"
@@ -52,7 +52,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="mb-2 text-muted" for="password"
+                <label class="mb-2 text-muted" for="user_password"
                   >Password <i>(minimum 8 characters)</i></label
                 >
                 <input
