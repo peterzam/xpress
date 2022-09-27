@@ -3,8 +3,9 @@ package controllers
 import (
 	"Xpress/models"
 	"Xpress/utils"
-	"log"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -29,72 +30,99 @@ func Logout() gin.HandlerFunc {
 		session.Clear()
 		session.Options(sessions.Options{Path: "/", MaxAge: -1})
 		if err := session.Save(); err != nil {
-			log.Println("Failed to save session:", err)
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
 			return
 		}
 		c.Redirect(http.StatusTemporaryRedirect, "/")
 	}
 }
 
-func LoginForm() gin.HandlerFunc {
+func AddPackagePage() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		session := sessions.Default(c)
-		user_phone := c.PostForm("user_phone")
-		user_password := c.PostForm("user_password")
-		var auth_user models.User
-
-		var invalid_login = &gin.H{
-			"button_text":       "Login",
-			"button_link":       "login",
-			"user_phone_status": "is-invalid",
-		}
-
-		if utils.DB.Where("phone = ?", user_phone).First(&auth_user).Error != nil {
-			c.HTML(http.StatusOK, "login.html", invalid_login)
-			return
-		}
-		if utils.GetMD5Hash(user_password) != auth_user.Password {
-			c.HTML(http.StatusOK, "login.html", invalid_login)
-			return
-		}
-		session.Set("user_id", auth_user.Id)
-		session.Set("user_phone", auth_user.Phone)
-		session.Set("user_name", auth_user.Name)
-		session.Set("user_address", auth_user.Address)
-		session.Set("user_role", auth_user.Role)
-		session.Set("user_active", auth_user.Active)
-		if err := session.Save(); err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
-			return
-		}
-		c.Redirect(http.StatusMovedPermanently, "/dashboard")
+		c.HTML(http.StatusOK, "addpackage.html", nil)
 	}
 }
 
-func RegisterForm() gin.HandlerFunc {
+func AddPackageForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var user = &models.User{
-			Name:     c.PostForm("user_name"),
-			Phone:    c.PostForm("user_phone"),
-			Address:  c.PostForm("user_address"),
-			Password: c.PostForm("user_password"),
+		session := sessions.Default(c)
+		var p = &models.Package{
+			Code:       utils.GeneratePackageCode(6),
+			Dest_name:  c.PostForm("package_dest_name"),
+			Dest_addr:  c.PostForm("package_dest_addr"),
+			Dest_phone: c.PostForm("package_dest_phone"),
+			Size:       c.PostForm("package_size"),
+			Type:       c.PostForm("package_type"),
+			Note:       c.PostForm("package_dest_note"),
+			Src_id:     session.Get("user_id").(uint),
 		}
+		fmt.Println(p)
 
-		// Check User Inputs
-		check := utils.CheckUserInputs(*user)
-		if check != "" {
-			c.HTML(http.StatusOK, "register.html", gin.H{
-				"user_register_status_text": check,
+		if utils.DB.Create(p).Error != nil {
+			// c.Redirect(http.StatusTemporaryRedirect, "/503")
+
+			c.HTML(http.StatusOK, "message.html", gin.H{
+				"message_heading":     "Error 🤌",
+				"message_text":        "Internal Server Error",
+				"message_button":      "dashboard",
+				"message_button_text": "Go back to Dashboard",
+			})
+			return
+		}
+		var message []string
+		message = append(message, "The package tracking code is")
+		message = append(message, p.Code)
+
+		c.HTML(http.StatusOK, "message.html", gin.H{
+			"message_heading":     "Success 👌",
+			"message_text":        message,
+			"message_button":      "dashboard",
+			"message_button_text": "Go back to Dashboard",
+		})
+	}
+}
+
+func SearchPackagePage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "searchpackage.html", nil)
+	}
+}
+
+func SearchPackageForm() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var pack = &models.Package{
+			Code: c.PostForm("package_code"),
+		}
+		if utils.DB.Where("code = ?", pack.Code).First(&pack).Error != nil {
+			c.HTML(http.StatusOK, "searchpackage.html", gin.H{
+				"package_search_response_text": "Package not found",
 			})
 			return
 		}
 
-		user.Password = utils.GetMD5Hash(user.Password)
-		if utils.DB.Create(user).Error != nil {
+		var src_user models.User
+		if utils.DB.Where("id = ?", pack.Src_id).First(&src_user).Error != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/503")
 			return
 		}
+		var message []string
+		message = append(message, "Sender Name : "+src_user.Name)
+		message = append(message, "Sender Phone : "+src_user.Phone)
+		message = append(message, "Sender Address : "+src_user.Address)
+		message = append(message, "Reveiver Name : "+pack.Dest_name)
+		message = append(message, "Reveiver Phone : "+pack.Dest_phone)
+		message = append(message, "Reveiver Address : "+pack.Dest_addr)
+		message = append(message, "Package Size : "+pack.Size)
+		message = append(message, "Package Type : "+pack.Type)
+		message = append(message, "Package Note : "+pack.Note)
+		message = append(message, "Receive Status : "+strconv.FormatBool(pack.Active))
 
-		c.Redirect(http.StatusMovedPermanently, "/dashboard")
+		c.HTML(http.StatusOK, "message.html", gin.H{
+			"message_heading":     "Package 🎁",
+			"message_text":        message,
+			"message_button":      "dashboard",
+			"message_button_text": "Go back to Dashboard",
+		})
+
 	}
 }

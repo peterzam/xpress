@@ -2,6 +2,8 @@ package utils
 
 import (
 	"Xpress/models"
+	"math/rand"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -16,10 +18,6 @@ func GetEnv(key string) string {
 }
 
 func CheckUserInputs(u models.User) string {
-	// Check Empty
-	if u.Name == "" || u.Phone == "" || u.Address == "" || u.Password == "" {
-		return "Inputs cannot be blanks"
-	}
 
 	// Check passowrd 8 characters
 	if len(u.Password) < 8 {
@@ -32,4 +30,18 @@ func CheckUserInputs(u models.User) string {
 	}
 
 	return ""
+}
+
+func GeneratePackageCode(l int) string {
+
+	charset := "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+	var seededRand *rand.Rand = rand.New(
+		rand.NewSource(time.Now().UnixNano()))
+
+	s := make([]byte, l)
+	for i := range s {
+		s[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return (string(s))
 }
