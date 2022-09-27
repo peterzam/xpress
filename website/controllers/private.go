@@ -39,7 +39,10 @@ func Logout() gin.HandlerFunc {
 
 func AddPackagePage() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "addpackage.html", nil)
+		c.HTML(http.StatusOK, "addpackage.html", gin.H{
+			"button_text": "Dashboard",
+			"button_link": "dashboard",
+		})
 	}
 }
 
@@ -84,7 +87,10 @@ func AddPackageForm() gin.HandlerFunc {
 
 func SearchPackagePage() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "searchpackage.html", nil)
+		c.HTML(http.StatusOK, "searchpackage.html", gin.H{
+			"button_text": "Dashboard",
+			"button_link": "dashboard",
+		})
 	}
 }
 
