@@ -69,18 +69,22 @@ func AddPackageForm() gin.HandlerFunc {
 				"message_text":        "Internal Server Error",
 				"message_button":      "dashboard",
 				"message_button_text": "Go back to Dashboard",
+				"button_text":         "Dashboard",
+				"button_link":         "dashboard",
 			})
 			return
 		}
 		var message []string
-		message = append(message, "The package tracking code is")
-		message = append(message, p.Code)
+		message = append(message, "Tracking code : "+p.Code)
+		message = append(message, " ")
 
 		c.HTML(http.StatusOK, "message.html", gin.H{
 			"message_heading":     "Success 👌",
 			"message_text":        message,
 			"message_button":      "dashboard",
 			"message_button_text": "Go back to Dashboard",
+			"button_text":         "Dashboard",
+			"button_link":         "dashboard",
 		})
 	}
 }
@@ -128,6 +132,8 @@ func SearchPackageForm() gin.HandlerFunc {
 			"message_text":        message,
 			"message_button":      "dashboard",
 			"message_button_text": "Go back to Dashboard",
+			"button_text":         "Dashboard",
+			"button_link":         "dashboard",
 		})
 
 	}
