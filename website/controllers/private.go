@@ -138,3 +138,12 @@ func SearchPackageForm() gin.HandlerFunc {
 
 	}
 }
+
+func ReportPage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "report.html", gin.H{
+			"button_text": "Dashboard",
+			"button_link": "dashboard",
+		})
+	}
+}

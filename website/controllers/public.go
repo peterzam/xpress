@@ -103,9 +103,3 @@ func RegisterForm() gin.HandlerFunc {
 		c.Redirect(http.StatusMovedPermanently, "/dashboard")
 	}
 }
-
-// func MessagePages(s string) gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-
-// 	}
-// }

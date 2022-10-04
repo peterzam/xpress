@@ -103,3 +103,50 @@ body {
 .register-response {
   color: red;
 }
+
+
+.feather {
+  width: 16px;
+  height: 16px;
+}
+
+
+.sidebar {
+
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 48px 0 0;
+
+}
+
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
+  }
+}
+
+.sidebar-sticky {
+  height: calc(100vh - 48px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sidebar .nav-link {
+
+  color: #ffffff;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #727272;
+}
+
+.sidebar .nav-link.active {
+  color: #2470dc;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
