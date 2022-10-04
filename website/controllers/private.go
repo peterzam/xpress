@@ -156,3 +156,21 @@ func ManageUserPage() gin.HandlerFunc {
 		})
 	}
 }
+
+func EditUserPage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "edituser.html", gin.H{
+			"button_text": "Dashboard",
+			"button_link": "dashboard",
+		})
+	}
+}
+
+func DeleteUserPage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "deleteuser.html", gin.H{
+			"button_text": "Dashboard",
+			"button_link": "dashboard",
+		})
+	}
+}

@@ -52,6 +52,8 @@ func PrivateRoutes(r *gin.RouterGroup) {
 	r.GET("/dashboard", controllers.DashboardPage())
 	r.GET("/report", controllers.ReportPage())
 	r.GET("/manageuser", controllers.ManageUserPage())
+	r.GET("/edituser", controllers.EditUserPage())
+	r.GET("/deleteuser", controllers.DeleteUserPage())
 	r.GET("/logout", controllers.Logout())
 	r.GET("/addpackage", controllers.AddPackagePage())
 	r.GET("/searchpackage", controllers.SearchPackagePage())
