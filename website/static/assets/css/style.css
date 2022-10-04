@@ -1,5 +1,10 @@
+:root {
+  --bg-blue: #0a3161;
+  --white: #ffffff; 
+}
+
 body {
-  background-color: #0a3161;
+  background-color: var(--bg-blue);
 }
 
 .container {
@@ -149,4 +154,23 @@ body {
 .sidebar .nav-link:hover .feather,
 .sidebar .nav-link.active .feather {
   color: inherit;
+}
+
+
+.themed-grid-col {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  background-color: rgba(255, 255, 255, 0.869);
+  border: 1px solid rgba(86, 61, 124, .2);
+}
+
+.themed-grid-col-button {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  background-color: rgba(255, 255, 255, 0.869);
+  border-bottom : 1px solid rgba(86, 61, 124, .2);
+}
+
+.container-table {
+  background-color: #ffffff;
 }
