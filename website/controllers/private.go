@@ -3,6 +3,7 @@ package controllers
 import (
 	"Xpress/models"
 	"Xpress/utils"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -172,5 +173,33 @@ func DeleteUserPage() gin.HandlerFunc {
 			"button_text": "Dashboard",
 			"button_link": "dashboard",
 		})
+	}
+}
+
+func OfficeMapPage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "officemap.html", gin.H{
+			"button_text": "Dashboard",
+			"button_link": "dashboard",
+			"map_api_key": utils.GetEnv("MAP_API_KEY"),
+		})
+	}
+}
+
+func OfficeLocationsData() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		var offices []models.Office
+
+		if utils.DB.Find(&offices).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			return
+		}
+		data, err := json.Marshal(offices)
+		if err != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			return
+		}
+		c.Data(http.StatusOK, gin.MIMEJSON, data)
 	}
 }
