@@ -6,8 +6,7 @@ CREATE TABLE users(
     name VARCHAR(30) NOT NULL,
     address VARCHAR(50) NOT NULL,
     password VARCHAR(32) NOT NULL,
-    role VARCHAR(10) NOT NULL,
-    active BOOLEAN
+    role VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE packages(
@@ -34,9 +33,9 @@ CREATE TABLE offices(
 );
 
 
-INSERT INTO users (phone, name, address, password, role, active) VALUES
-('00000000','admin','Yangon','21232f297a57a5a743894a0e4a801fc3','admin',true),
-('11111111','user','Mandalay','ee11cbb19052e40b07aac0ca060c23ee','user',false);
+INSERT INTO users (phone, name, address, password, role) VALUES
+('00000000','admin','Yangon','21232f297a57a5a743894a0e4a801fc3','admin'),
+('11111111','user','Mandalay','ee11cbb19052e40b07aac0ca060c23ee','user');
 
 INSERT INTO packages(code, dest_name, dest_addr, dest_phone, size, type, note, active, src_id) VALUES
 ('V2N3RC','Aung','Pyin Oo Lwin','01010101','20cm x 50cm x 2cm','express','books',true,1),
