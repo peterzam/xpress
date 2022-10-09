@@ -59,6 +59,9 @@ func PrivateRoutes(r *gin.RouterGroup) {
 	r.GET("/logout", controllers.Logout())
 	r.GET("/addpackage", controllers.AddPackagePage())
 	r.GET("/searchpackage", controllers.SearchPackagePage())
+	r.GET("/users", controllers.UsersData())
 	r.POST("/addpackage", controllers.AddPackageForm())
 	r.POST("/searchpackage", controllers.SearchPackageForm())
+	r.POST("/deleteuser", controllers.DeleteUserForm())
+	r.POST("/edituser", controllers.EditUserForm())
 }

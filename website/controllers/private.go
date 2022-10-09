@@ -65,7 +65,7 @@ func AddPackageForm() gin.HandlerFunc {
 		if utils.DB.Create(p).Error != nil {
 			// c.Redirect(http.StatusTemporaryRedirect, "/503")
 
-			c.HTML(http.StatusOK, "message.html", gin.H{
+			c.HTML(http.StatusInternalServerError, "message.html", gin.H{
 				"message_heading":     "Error 🤌",
 				"message_text":        "Internal Server Error",
 				"message_button":      "dashboard",
@@ -201,5 +201,50 @@ func OfficeLocationsData() gin.HandlerFunc {
 			return
 		}
 		c.Data(http.StatusOK, gin.MIMEJSON, data)
+	}
+}
+
+func UsersData() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		var users []models.User
+
+		if utils.DB.Find(&users).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			return
+		}
+		data, err := json.Marshal(users)
+		if err != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			return
+		}
+		c.Data(http.StatusOK, gin.MIMEJSON, data)
+	}
+}
+
+func DeleteUserForm() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		user_phone := c.PostForm("user_phone")
+		var auth_user models.User
+		if utils.DB.Where("phone = ?", user_phone).Unscoped().Delete(&auth_user).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			return
+		}
+	}
+}
+
+func EditUserForm() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		auth_user := models.User{
+			Name:    c.PostForm("user_name"),
+			Address: c.PostForm("user_address"),
+			Role:    c.PostForm("user_role"),
+		}
+
+		if utils.DB.Model(models.User{}).Where("phone = ?", c.PostForm("user_phone")).Updates(auth_user).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			return
+		}
 	}
 }

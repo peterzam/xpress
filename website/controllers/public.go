@@ -67,7 +67,6 @@ func LoginForm() gin.HandlerFunc {
 		session.Set("user_name", auth_user.Name)
 		session.Set("user_address", auth_user.Address)
 		session.Set("user_role", auth_user.Role)
-		session.Set("user_active", auth_user.Active)
 		if err := session.Save(); err != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/503")
 			return
