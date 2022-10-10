@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -59,6 +60,7 @@ func AddPackageForm() gin.HandlerFunc {
 			Type:       c.PostForm("package_type"),
 			Note:       c.PostForm("package_dest_note"),
 			Src_id:     session.Get("user_id").(uint),
+			Created_at: time.Now().Unix(),
 		}
 		fmt.Println(p)
 
@@ -127,6 +129,7 @@ func SearchPackageForm() gin.HandlerFunc {
 		message = append(message, "Package Type : "+pack.Type)
 		message = append(message, "Package Note : "+pack.Note)
 		message = append(message, "Receive Status : "+strconv.FormatBool(pack.Active))
+		message = append(message, "Send Time : "+time.Unix(pack.Created_at, 0).Format(time.UnixDate))
 
 		c.HTML(http.StatusOK, "message.html", gin.H{
 			"message_heading":     "Package 🎁",
