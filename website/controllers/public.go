@@ -158,7 +158,7 @@ func SearchPackageForm() gin.HandlerFunc {
 
 func OfficeMapPage() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "officemap.html", gin.H{
+		c.HTML(http.StatusOK, "office.html", gin.H{
 			"button_text": "Login",
 			"button_link": "login",
 			"map_api_key": utils.GetEnv("MAP_API_KEY"),

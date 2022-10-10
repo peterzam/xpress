@@ -1,0 +1,106 @@
+{{ template "head" . }}
+<div class="container-xl">
+    <div
+        class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center"
+    >
+        <h1 class="display-4 fw-normal text-white">Offices</h1>
+    </div>
+
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Offices</h2>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover" id="table">
+                <thead>
+                    <tr>
+                        <th class="w-25">Name</th>
+                        <th>Addess</th>
+                        <th>Phone</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div
+    class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center"
+>
+    <h2 class="display-4 fw-normal text-white">Offices On Map</h2></div>
+    <div class="map mx-auto" id="googleMap"></div>
+</div>
+<script>
+    function myMap() {
+        // GET request to Endpoint, get offices
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "/offices", false);
+        xmlHttp.send(null);
+        var offices = JSON.parse(xmlHttp.responseText);
+
+        var table = document.getElementById("table");
+        for (i = 0; i < offices.length; i++) {
+            var row = table.insertRow(1);
+            var col = [
+                row.insertCell(0),
+                row.insertCell(1),
+                row.insertCell(2),
+                row.insertCell(3),
+                row.insertCell(4),
+            ];
+            col[0].innerHTML = offices[i].name;
+            col[1].innerHTML = offices[i].address;
+            col[2].innerHTML = offices[i].phone;
+        }
+        // Declare new map
+        var map = new google.maps.Map(document.getElementById("googleMap"), {
+            zoom: 6,
+            center: new google.maps.LatLng(
+                offices[0].location_lat,
+                offices[0].location_lng
+            ),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+        });
+
+        // Declare InfoWindow for info text
+        var infowindow = new google.maps.InfoWindow();
+        var marker, i;
+
+        // Add markers on map from locations array
+        for (i = 0; i < offices.length; i++) {
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(
+                    offices[i].location_lat,
+                    offices[i].location_lng
+                ),
+                map: map,
+            });
+            // Show info windows on click on the markers
+            google.maps.event.addListener(
+                marker,
+                "click",
+                (function (marker, i) {
+                    return function () {
+                        infowindow.setContent(
+                            offices[i].name +
+                                "<br>" +
+                                offices[i].address +
+                                "<br>" +
+                                offices[i].phone
+                        );
+                        infowindow.open(map, marker);
+                    };
+                })(marker, i)
+            );
+        }
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ .map_api_key }}&callback=myMap"></script>
+
+{{ template "foot" }}

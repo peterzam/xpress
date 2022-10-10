@@ -1,71 +1,70 @@
 {{ template "head" . }}
 
-<div class="container-fluid">
+<div class="container-fluid" id="report-bar">
     <div class="row">
-
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
-            <div class="position-sticky pt-3 sidebar-sticky">
-              <ul class="nav flex-column">
-      
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file" class="align-text-bottom"></span>
-                    Orders
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="shopping-cart" class="align-text-bottom"></span>
-                    Products
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="users" class="align-text-bottom"></span>
-                    Customers
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-                    Reports
-                  </a>
-                </li>
-              </ul>
-      
-              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
-                <span>Saved reports</span>
-              </h6>
-              <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
-                    Current month
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
-                    Last quarter
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
-                    Social engagement
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <span data-feather="file-text" class="align-text-bottom"></span>
-                    Year-end sale
-                  </a>
-                </li>
-              </ul>
+            <div class=" col-md-3 col-lg-2 d-md-block sidebar collapse position-sticky pt-3 sidebar-sticky">
+                <h6
+                    class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
+                >
+                    <span>Reports</span>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" id="report_current_month" type="button">
+                            <span
+                                data-feather="file-text"
+                                class="align-text-bottom"
+                            ></span>
+                            Current Month
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="report_current_year" type="button">
+                            <span
+                                data-feather="file-text"
+                                class="align-text-bottom"
+                            ></span>
+                            Current Year
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span
+                                data-feather="file-text"
+                                class="align-text-bottom"
+                            ></span>
+                            Custom Month
+                        </a>
+                        <select class="form-control" id="report_month">
+                          <option value="1">Jan</option>
+                          <option value="2">Feb</option>
+                          <option value="3">Mar</option>
+                          <option value="4">Apr</option>
+                          <option value="5">May</option>
+                          <option value="6">Jun</option>
+                          <option value="7">Jul</option>
+                          <option value="8">Aug</option>
+                          <option value="9">Sep</option>
+                          <option value="10">Oct</option>
+                          <option value="11">Nov</option>
+                          <option value="12">Dec</option>
+                      </select>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                          <span
+                              data-feather="file-text"
+                              class="align-text-bottom"
+                          ></span>
+                          Custom Year
+                      </a>
+                      <select class="form-control" id="report_year">
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                    </select>
+                  </li>
+                </ul>
             </div>
-          </nav>
-
-
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <canvas
                 class="my-4 w-100"
@@ -79,67 +78,85 @@
 <script src="./assets/js/feather.min.js"></script>
 <script src="./assets/js/Chart.min.js"></script>
 <script>
+    feather.replace({ "aria-hidden": "true" });
+    const ctx = document.getElementById("myChart");
+    function UpdateChart() {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "/report_data/"+type+"/"+value, false);
+        xmlHttp.send(null);
+        var data = JSON.parse(xmlHttp.responseText);
 
-feather.replace({ "aria-hidden": "true" });
-
-// Graphs
-const ctx = document.getElementById("myChart");
-// eslint-disable-next-line no-unused-vars
-const myChart = new Chart(ctx, {
-    type: "line",
-    data: {
-        labels: [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-        ],
-        datasets: [
-            {
-                data: [15, 42, 36, 48, 46, 48, 24],
-                lineTension: 0,
-                backgroundColor: "transparent",
-                borderColor: "#007bff",
-                borderWidth: 4,
-                pointBackgroundColor: "#007bff",
-                color: "#FFFFFF",
+        const myChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: data.labels,
+                datasets: [
+                    {
+                        data: data.data,
+                        lineTension: 0,
+                        backgroundColor: "transparent",
+                        borderColor: "#007bff",
+                        borderWidth: 4,
+                        pointBackgroundColor: "#007bff",
+                        color: "#FFFFFF",
+                    },
+                ],
             },
-        ],
-    },
-    options: {
-        scales: {
-            yAxes: [
-                {
-                    ticks: {
-                        fontColor: "white",
-                        beginAtZero: false,
-                    },
-                    gridLines: {
-                        color: "white",
-                    },
+            options: {
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                fontColor: "white",
+                                beginAtZero: false,
+                            },
+                            gridLines: {
+                                color: "white",
+                            },
+                        },
+                    ],
+                    xAxes: [
+                        {
+                            ticks: {
+                                fontColor: "white",
+                                beginAtZero: false,
+                            },
+                            gridLines: {
+                                display: false,
+                            },
+                        },
+                    ],
                 },
-            ],
-            xAxes: [
-                {
-                    ticks: {
-                        fontColor: "white",
-                        beginAtZero: false,
-                    },
-                    gridLines: {
-                        display: false,
-                    },
+
+                legend: {
+                    display: false,
                 },
-            ],
-        },
+            },
+        });
+    }
 
-        legend: {
-            display: false,
-        },
-    },
-});
+    document.getElementById("report_current_month").addEventListener("click",function() {
+      type = "monthly"
+      value = "0"
+      UpdateChart();
+    });
+    document.getElementById("report_month").addEventListener("change",function() {
+      type = "monthly"
+      value = this.value
+      UpdateChart();
+    });
+    document.getElementById("report_current_year").addEventListener("click",function() {
+      type = "yearly"
+      value = "0"
+      UpdateChart();
+    });
+    document.getElementById("report_year").addEventListener("change",function() {
+      type = "yearly"
+      value = this.value
+      UpdateChart();
+    });
+    
 
+  
 </script>
 {{ template "foot" }}

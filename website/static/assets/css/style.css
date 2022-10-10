@@ -259,3 +259,8 @@ table.table .avatar {
     vertical-align: middle;
     margin-right: 10px;
 }
+
+.map {
+    width: 80%;
+    height: 500px;
+}

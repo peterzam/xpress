@@ -55,6 +55,7 @@ func PublicRoutes(r *gin.RouterGroup) {
 func PrivateRoutes(r *gin.RouterGroup) {
 	r.GET("/dashboard", controllers.DashboardPage())
 	r.GET("/report", controllers.ReportPage())
+	r.GET("/report_data/:type/:value", controllers.ReportData())
 	r.GET("/logout", controllers.Logout())
 
 	r.GET("/users", controllers.UsersData())

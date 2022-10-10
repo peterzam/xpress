@@ -31,3 +31,8 @@ type User struct {
 	Address  string `json:"address" gorm:"type:varchar(50);not null"`
 	Role     string `json:"role" gorm:"type:varchar(10);default:user;not null"`
 }
+
+type Chart struct {
+	Labels []string `json:"labels"`
+	Data   []int    `json:"data"`
+}
