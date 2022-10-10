@@ -6,9 +6,9 @@
 
 <script>
     function myMap() {
-        // GET request to Endpoint, get officelocations
+        // GET request to Endpoint, get offices
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "/officelocations", false);
+        xmlHttp.open("GET", "/offices", false);
         xmlHttp.send(null);
         var locations = JSON.parse(xmlHttp.responseText);
 

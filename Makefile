@@ -17,6 +17,9 @@ db-up:
 db-down:
 	podman stop xpress-db
 
+db-clean:
+	rm -rf db/*
+
 server-up:
 
 server-down:

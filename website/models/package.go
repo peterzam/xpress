@@ -9,7 +9,7 @@ type Package struct {
 	Size       string `json:"size" gorm:"type:varchar(50);not null"`
 	Type       string `json:"type" gorm:"type:varchar(20);default:normal;not null"`
 	Note       string `json:"note" gorm:"type:varchar(50)"`
-	Active     bool   `json:"active" gorm:"type:bool;default:false"`
+	Status     string `json:"status" gorm:"type:bool;default:false"`
 	Src_id     uint   `json:"src_id" gorm:"type:uint;not null"`
 	Created_at int64  `json:"created_at" gorm:"autoCreateTime"`
 }
