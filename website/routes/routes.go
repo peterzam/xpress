@@ -27,36 +27,60 @@ func Handlers() *gin.Engine {
 	/// Public Routes
 	PublicRoutes(r.Group("/"))
 
-	/// Private Routes
-	private := r.Group("/")
-	private.Use(controllers.AuthRequired())
-	PrivateRoutes(private)
+	/// Private - user Routes
+	user := r.Group("/")
+	user.Use(controllers.UserAuthRequired())
+	PrivateUserRoutes(user)
+
+	/// Private - admin Routes
+	admin := r.Group("/")
+	admin.Use(controllers.AdminAuthRequired())
+	PrivateAdminRoutes(admin)
 
 	return r
 }
 
 func PublicRoutes(r *gin.RouterGroup) {
 
-	r.GET("/404", controllers.StaticPages())
-	r.GET("/503", controllers.StaticPages())
+	r.GET("/401", controllers.ErrorUnauthorizedPage())
+	r.GET("/404", controllers.ErrorNotFoundPage())
+	r.GET("/503", controllers.ErrorUnauthorizedPage())
+
 	r.GET("/", controllers.StaticPages())
 	r.GET("/aboutus", controllers.StaticPages())
 	r.GET("/contactus", controllers.StaticPages())
-	r.GET("/register", controllers.StaticPages())
-	r.GET("/login", controllers.StaticPages())
+
 	r.GET("/office", controllers.OfficeMapPage())
 	r.GET("/offices", controllers.OfficesData())
+
+	r.GET("/login", controllers.StaticPages())
 	r.POST("/login", controllers.LoginForm())
+
+	r.GET("/register", controllers.StaticPages())
 	r.POST("/register", controllers.RegisterForm())
+
 	r.GET("/searchpackage", controllers.SearchPackagePage())
 	r.POST("/searchpackage", controllers.SearchPackageForm())
 }
 
-func PrivateRoutes(r *gin.RouterGroup) {
+func PrivateUserRoutes(r *gin.RouterGroup) {
 	r.GET("/dashboard", controllers.DashboardPage())
+	r.GET("/logout", controllers.Logout())
+
+	r.GET("/addpackage", controllers.AddPackagePage())
+	r.POST("/addpackage", controllers.AddPackageForm())
+
+	r.GET("/request_pickup", controllers.RequestPickupPage())
+	r.POST("/request_pickup", controllers.RequestPickupForm())
+
+	r.GET("/addcomplaint", controllers.AddComplaintPage())
+	r.POST("/addcomplaint", controllers.AddComplaintForm())
+}
+
+func PrivateAdminRoutes(r *gin.RouterGroup) {
+	r.GET("/admin", controllers.AdminDashboardPage())
 	r.GET("/report", controllers.ReportPage())
 	r.GET("/report_data/:type/:value", controllers.ReportData())
-	r.GET("/logout", controllers.Logout())
 
 	r.GET("/users", controllers.UsersData())
 	r.GET("/manageuser", controllers.ManageUserPage())
@@ -68,26 +92,16 @@ func PrivateRoutes(r *gin.RouterGroup) {
 	r.POST("/deleteoffice", controllers.DeleteOfficeForm())
 	r.POST("/editoffice", controllers.EditOfficeForm())
 
-	r.GET("/addpackage", controllers.AddPackagePage())
-	r.POST("/addpackage", controllers.AddPackageForm())
-
 	r.GET("/packages", controllers.PackagesData())
 	r.GET("/managepackage", controllers.ManagePackagePage())
 	r.POST("/deletepackage", controllers.DeletePackageForm())
 	r.POST("/editpackage", controllers.EditPackageForm())
 
-	r.GET("/request_pickup", controllers.RequestPickupPage())
-	r.POST("/request_pickup", controllers.RequestPickupForm())
-
 	r.GET("/pickups", controllers.PickupsData())
 	r.GET("/managepickup", controllers.ManagePickupPage())
 	r.POST("/deletepickup", controllers.DeletePickupForm())
 
-	r.GET("/addcomplaint", controllers.AddComplaintPage())
-	r.POST("/addcomplaint", controllers.AddComplaintForm())
-
 	r.GET("/complaints", controllers.ComplaintData())
 	r.GET("/managecomplaint", controllers.ManageComplaintPage())
 	r.POST("/deletecomplaint", controllers.DeleteComplaintsForm())
-
 }

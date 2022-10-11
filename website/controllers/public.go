@@ -18,6 +18,63 @@ func NoRoute() gin.HandlerFunc {
 	}
 }
 
+func ErrorNotFoundPage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var header = &gin.H{
+			"button_text": "Login",
+			"button_link": "login",
+		}
+		// Check session if already logged in
+		session := sessions.Default(c)
+		if session.Get("user_id") != nil {
+			header = &gin.H{
+				"button_text": "Dashboard",
+				"button_link": "dashboard",
+			}
+		}
+
+		c.HTML(http.StatusNotFound, "404.html", header)
+	}
+}
+
+func ErrorInternalServerPage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var header = &gin.H{
+			"button_text": "Login",
+			"button_link": "login",
+		}
+		// Check session if already logged in
+		session := sessions.Default(c)
+		if session.Get("user_id") != nil {
+			header = &gin.H{
+				"button_text": "Dashboard",
+				"button_link": "dashboard",
+			}
+		}
+
+		c.HTML(http.StatusInternalServerError, "503.html", header)
+	}
+}
+
+func ErrorUnauthorizedPage() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var header = &gin.H{
+			"button_text": "Login",
+			"button_link": "login",
+		}
+		// Check session if already logged in
+		session := sessions.Default(c)
+		if session.Get("user_id") != nil {
+			header = &gin.H{
+				"button_text": "Dashboard",
+				"button_link": "dashboard",
+			}
+		}
+
+		c.HTML(http.StatusUnauthorized, "401.html", header)
+	}
+}
+
 func StaticPages() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Login button
