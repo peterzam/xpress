@@ -1,3 +1,5 @@
-.env
+
 note
 db/
+website/dist
+website/.env

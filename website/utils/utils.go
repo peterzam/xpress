@@ -9,7 +9,7 @@ import (
 )
 
 func GetEnv(key string) string {
-	viper.SetConfigFile("../.env")
+	viper.SetConfigFile(".env")
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(err)

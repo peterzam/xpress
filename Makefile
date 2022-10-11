@@ -8,7 +8,7 @@ db-up:
 	podman run -itd --rm \
 	--name xpress-db \
 	--userns keep-id \
-	--env-file .env \
+	--env-file ./website/.env \
 	--volume ./db:/var/lib/mysql \
 	--volume ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql \
 	-p 3306:3306 \
