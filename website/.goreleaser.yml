@@ -7,20 +7,27 @@ builds:
     goos:
       - linux
       - windows
-      - darwin
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - "6"
+      - "7"
+    goamd64:
+      - v2
+      - v3
 archives:
-  - 
-    files:
-      - README.md
-      - LICENSE*
+  - files:
+      - static/**/**/*
     wrap_in_directory: true
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
+      - "^docs:"
+      - "^test:"
