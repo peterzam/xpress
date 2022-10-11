@@ -94,8 +94,8 @@ func ComplaintData() gin.HandlerFunc {
 func ManageComplaintPage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "managecomplaint.html", gin.H{
-			"button_text": "Dashboard",
-			"button_link": "dashboard",
+			"button_text": "Admin Dashboard",
+			"button_link": "admin",
 		})
 	}
 }

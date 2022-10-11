@@ -11,8 +11,8 @@ import (
 func ManageOfficePage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "manageoffice.html", gin.H{
-			"button_text": "Dashboard",
-			"button_link": "dashboard",
+			"button_text": "Admin Dashboard",
+			"button_link": "admin",
 		})
 	}
 }
