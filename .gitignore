@@ -1,5 +1,5 @@
-
 note
 db/
-website/dist
-website/.env
+dist
+.env/
+Makefile
