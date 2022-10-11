@@ -12,13 +12,16 @@
                     {{ range .message_text }}<hr>
                     <p class="lead fw-normal text-right">{{ . }}</p>
                     {{ end }}
-                    <a
+                    <div class="text-center">
+                         <a
                         role="button"
                         class="btn btn-primary ms-auto"
                         aria-current="page"
                         href="/{{ .message_button }}"
                         >{{ .message_button_text }}</a
                     >
+                    </div>
+                   
                 </div>
             </div>
         </div>

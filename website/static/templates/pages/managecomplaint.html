@@ -1,0 +1,153 @@
+{{ template "head" . }}
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Manage <b>Complaints</b></h2>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover" id="table">
+                <thead>
+                    <tr>
+                        <th class="w-25">Request User</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Delete Modal HTML -->
+<div id="deleteComplaintModal" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Complaint</h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="text-warning">
+                        <small>This action cannot be undone.</small>
+                    </h3>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-danger"
+                        id="submitDeleteButton"
+                    >
+                        Delete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- view Modal -->
+<div id="viewComplaintModal" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Complaint</h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    Username : <div class="complaint_user_name"></div></br>
+                    Phone : <div class="complaint_user_phone"></div></br>
+                    Complaint Note : <div class="complaint_note"></div></br>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // Get data from backend and display on table
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "/complaints", false);
+    xmlHttp.send(null);
+    var complaints = JSON.parse(xmlHttp.responseText);
+    var table = document.getElementById("table");
+    for (i = 0; i < complaints.length; i++) {
+        var row = table.insertRow(1);
+        var col = [
+            row.insertCell(0),
+            row.insertCell(1),
+            row.insertCell(2),
+            row.insertCell(3),
+        ];
+        col[0].innerHTML = complaints[i].user_name;
+        col[1].innerHTML = complaints[i].complaint_note;
+        col[2].innerHTML =
+            `<a href="#viewComplaintModal" class="view" type=button data-bs-toggle="modal" data-bs-target="#viewComplaintModal" title="View" data-bs-complaint_note="` +
+            complaints[i].complaint_note +
+            `" data-bs-complaint_user_name="` +
+            complaints[i].user_name +
+            `" data-bs-complaint_user_phone="` +
+            complaints[i].user_phone +
+            `"><i class="material-icons">&#xE8f4;</i></a>
+            <a href="#deleteComplaintModal" class="delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteComplaintModal" title="Delete" data-bs-complaint_id="` +
+            complaints[i].complaint_id +
+            `"><i class="material-icons" >&#xE872;</i></a>`;
+    }
+
+    // For Delete Button Modal
+    var id;
+    const deleteComplaintModal = document.getElementById("deleteComplaintModal");
+    deleteComplaintModal.addEventListener("show.bs.modal", (event) => {
+        const button = event.relatedTarget;
+        id = button.getAttribute("data-bs-complaint_id");
+    });
+    const submitDeleteButton = document.getElementById("submitDeleteButton");
+    submitDeleteButton.addEventListener("click", (event) => {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", "/deletecomplaint", false);
+        xmlHttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+        );
+        xmlHttp.send("complaint_id=" + id);
+    });
+
+    const viewComplaintModal = document.getElementById("viewComplaintModal");
+    viewComplaintModal.addEventListener("show.bs.modal", (event) => {
+        const button = event.relatedTarget;
+        viewComplaintModal.querySelector(".complaint_note").textContent = button.getAttribute("data-bs-complaint_note");
+        viewComplaintModal.querySelector(".complaint_user_name").textContent = button.getAttribute("data-bs-complaint_user_name");
+        viewComplaintModal.querySelector(".complaint_user_phone").textContent = button.getAttribute("data-bs-complaint_user_phone");
+    });
+</script>
+{{ template "foot" }}

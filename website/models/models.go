@@ -36,3 +36,17 @@ type Chart struct {
 	Labels []string `json:"labels"`
 	Data   []int    `json:"data"`
 }
+
+type Pickup struct {
+	Id     uint   `json:"id" gorm:"primaryKey;autoIncrement"`
+	Size   string `json:"size" gorm:"type:varchar(50);not null"`
+	Type   string `json:"type" gorm:"type:varchar(20);default:normal;not null"`
+	Note   string `json:"note" gorm:"type:varchar(50)"`
+	Src_id uint   `json:"src_id" gorm:"type:uint;not null"`
+}
+
+type Complaint struct {
+	Id     uint   `json:"id" gorm:"primaryKey;autoIncrement"`
+	Note   string `json:"note" gorm:"type:varchar(50)"`
+	Src_id uint   `json:"src_id" gorm:"type:uint;not null"`
+}

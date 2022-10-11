@@ -44,7 +44,7 @@ func PublicRoutes(r *gin.RouterGroup) {
 	r.GET("/contactus", controllers.StaticPages())
 	r.GET("/register", controllers.StaticPages())
 	r.GET("/login", controllers.StaticPages())
-	r.GET("/officemap", controllers.OfficeMapPage())
+	r.GET("/office", controllers.OfficeMapPage())
 	r.GET("/offices", controllers.OfficesData())
 	r.POST("/login", controllers.LoginForm())
 	r.POST("/register", controllers.RegisterForm())
@@ -75,4 +75,19 @@ func PrivateRoutes(r *gin.RouterGroup) {
 	r.GET("/managepackage", controllers.ManagePackagePage())
 	r.POST("/deletepackage", controllers.DeletePackageForm())
 	r.POST("/editpackage", controllers.EditPackageForm())
+
+	r.GET("/request_pickup", controllers.RequestPickupPage())
+	r.POST("/request_pickup", controllers.RequestPickupForm())
+
+	r.GET("/pickups", controllers.PickupsData())
+	r.GET("/managepickup", controllers.ManagePickupPage())
+	r.POST("/deletepickup", controllers.DeletePickupForm())
+
+	r.GET("/addcomplaint", controllers.AddComplaintPage())
+	r.POST("/addcomplaint", controllers.AddComplaintForm())
+
+	r.GET("/complaints", controllers.ComplaintData())
+	r.GET("/managecomplaint", controllers.ManageComplaintPage())
+	r.POST("/deletecomplaint", controllers.DeleteComplaintsForm())
+
 }
