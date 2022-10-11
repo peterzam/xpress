@@ -213,7 +213,7 @@ func SearchPackageForm() gin.HandlerFunc {
 	}
 }
 
-func OfficeMapPage() gin.HandlerFunc {
+func OfficePage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "office.html", gin.H{
 			"button_text": "Login",

@@ -50,7 +50,7 @@ func PublicRoutes(r *gin.RouterGroup) {
 	r.GET("/aboutus", controllers.StaticPages())
 	r.GET("/contactus", controllers.StaticPages())
 
-	r.GET("/office", controllers.OfficeMapPage())
+	r.GET("/office", controllers.OfficePage())
 	r.GET("/offices", controllers.OfficesData())
 
 	r.GET("/login", controllers.StaticPages())
