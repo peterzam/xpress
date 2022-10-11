@@ -4,7 +4,6 @@ import (
 	"Xpress/models"
 	"Xpress/utils"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -52,7 +51,6 @@ func AddPackageForm() gin.HandlerFunc {
 			Src_id:     session.Get("user_id").(uint),
 			Created_at: time.Now().Unix(),
 		}
-		fmt.Println(p)
 
 		if utils.DB.Create(p).Error != nil {
 			// c.Redirect(http.StatusTemporaryRedirect, "/503")
@@ -106,7 +104,6 @@ func EditPackageForm() gin.HandlerFunc {
 			Note:   c.PostForm("package_note"),
 			Status: c.PostForm("package_status"),
 		}
-		fmt.Println("Here reach")
 		if utils.DB.Model(models.Package{}).Where("code = ?", c.PostForm("package_code")).Updates(auth_package).Error != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/503")
 			return

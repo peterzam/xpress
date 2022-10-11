@@ -4,7 +4,6 @@ import (
 	"Xpress/models"
 	"Xpress/utils"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -30,7 +29,6 @@ func ReportData() gin.HandlerFunc {
 			chart = utils.YearlyReport(value)
 		} else if c.Param("type") == "monthly" {
 			value, _ := strconv.Atoi(c.Param("value"))
-			fmt.Println("here")
 			chart = utils.MonthlyReport(value)
 		} else {
 			c.Redirect(http.StatusTemporaryRedirect, "/404")

@@ -3,7 +3,6 @@ package controllers
 import (
 	"Xpress/models"
 	"Xpress/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +27,6 @@ func AddOfficeForm() gin.HandlerFunc {
 			Location_lat: c.PostForm("office_location_lat"),
 			Location_lng: c.PostForm("office_location_lng"),
 		}
-		fmt.Println(auth_office.Address)
 		if utils.DB.Create(auth_office).Error != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/503")
 			return

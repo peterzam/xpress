@@ -4,7 +4,6 @@ import (
 	"Xpress/models"
 	"Xpress/utils"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -103,9 +102,7 @@ func ManageComplaintPage() gin.HandlerFunc {
 
 func DeleteComplaintsForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("here")
 		if utils.DB.Where("id = ?", c.PostForm("complaint_id")).Unscoped().Delete(models.Complaint{}).Error != nil {
-			fmt.Println(c.PostForm("complaint_id"))
 			c.Redirect(http.StatusTemporaryRedirect, "/503")
 			return
 		}

@@ -4,7 +4,6 @@ import (
 	"Xpress/models"
 	"Xpress/utils"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -29,7 +28,6 @@ func RequestPickupForm() gin.HandlerFunc {
 			Note:   c.PostForm("pickup_note"),
 			Src_id: session.Get("user_id").(uint),
 		}
-		fmt.Println(p)
 
 		if utils.DB.Create(p).Error != nil {
 
