@@ -50,3 +50,10 @@ type Complaint struct {
 	Note   string `json:"note" gorm:"type:varchar(50)"`
 	Src_id uint   `json:"src_id" gorm:"type:uint;not null"`
 }
+
+type Bfmitem struct {
+	Id    uint   `json:"id" gorm:"primaryKey;autoIncrement"`
+	Name  string `json:"name" gorm:"type:varchar(30);not null"`
+	Price string `json:"price" gorm:"type:varchar(20);not null"`
+	Note  string `json:"note" gorm:"type:varchar(50)"`
+}

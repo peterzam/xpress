@@ -1,0 +1,48 @@
+{{ template "head" . }}
+<div class="container-xl">
+    <div
+        class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center"
+    >
+        <h1 class="display-4 fw-normal text-white">Buy for me</h1>
+    </div>
+
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Available Items</h2>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover" id="table">
+                <thead>
+                    <tr>
+                        <th class="w-25">Name</th>
+                        <th>Price</th>
+                        <th>Note</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    // GET request to Endpoint, get bfm_items
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "/bfms", false);
+    xmlHttp.send(null);
+    var bfm_items = JSON.parse(xmlHttp.responseText);
+    var table = document.getElementById("table");
+    for (i = 0; i < bfm_items.length; i++) {
+        var row = table.insertRow(1);
+        var col = [row.insertCell(0), row.insertCell(1), row.insertCell(2)];
+        col[0].innerHTML = bfm_items[i].name;
+        col[1].innerHTML = bfm_items[i].price;
+        col[2].innerHTML = bfm_items[i].note;
+    }
+</script>
+
+{{ template "foot" }}

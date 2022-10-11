@@ -75,6 +75,9 @@ func PrivateUserRoutes(r *gin.RouterGroup) {
 
 	r.GET("/addcomplaint", controllers.AddComplaintPage())
 	r.POST("/addcomplaint", controllers.AddComplaintForm())
+
+	r.GET("/bfm", controllers.BfmPage())
+	r.GET("/bfms", controllers.BfmItemsData())
 }
 
 func PrivateAdminRoutes(r *gin.RouterGroup) {
