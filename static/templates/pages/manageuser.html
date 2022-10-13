@@ -176,6 +176,11 @@
             "application/x-www-form-urlencoded"
         );
         xmlHttp.send("user_phone=" + phone);
+
+        if (xmlHttp.status != 200) {
+            alert("This user has related packages, pickups or complaints. Delete them first")
+        }
+
     });
 
     const editUserModal = document.getElementById("editUserModal");
