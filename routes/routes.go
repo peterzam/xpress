@@ -42,15 +42,15 @@ func Handlers() *gin.Engine {
 
 func PublicRoutes(r *gin.RouterGroup) {
 
-	r.GET("/401", controllers.ErrorUnauthorizedPage())
-	r.GET("/404", controllers.ErrorNotFoundPage())
-	r.GET("/503", controllers.ErrorUnauthorizedPage())
+	r.GET("/401", controllers.ErrorPages())
+	r.GET("/404", controllers.ErrorPages())
+	r.GET("/500", controllers.ErrorPages())
 
 	r.GET("/", controllers.StaticPages())
 	r.GET("/aboutus", controllers.StaticPages())
 	r.GET("/contactus", controllers.StaticPages())
 
-	r.GET("/office", controllers.OfficePage())
+	r.GET("/office", controllers.StaticPages())
 	r.GET("/offices", controllers.OfficesData())
 
 	r.GET("/login", controllers.StaticPages())
@@ -59,52 +59,53 @@ func PublicRoutes(r *gin.RouterGroup) {
 	r.GET("/register", controllers.StaticPages())
 	r.POST("/register", controllers.RegisterForm())
 
-	r.GET("/searchpackage", controllers.SearchPackagePage())
+	r.GET("/searchpackage", controllers.StaticPages())
 	r.POST("/searchpackage", controllers.SearchPackageForm())
 }
 
 func PrivateUserRoutes(r *gin.RouterGroup) {
-	r.GET("/dashboard", controllers.DashboardPage())
+	r.GET("/dashboard", controllers.StaticPages())
 	r.GET("/logout", controllers.Logout())
 
-	r.GET("/addpackage", controllers.AddPackagePage())
+	r.GET("/addpackage", controllers.StaticPages())
 	r.POST("/addpackage", controllers.AddPackageForm())
 
-	r.GET("/request_pickup", controllers.RequestPickupPage())
-	r.POST("/request_pickup", controllers.RequestPickupForm())
+	r.GET("/requestpickup", controllers.StaticPages())
+	r.POST("/requestpickup", controllers.RequestPickupForm())
 
-	r.GET("/addcomplaint", controllers.AddComplaintPage())
+	r.GET("/addcomplaint", controllers.StaticPages())
 	r.POST("/addcomplaint", controllers.AddComplaintForm())
 
-	r.GET("/bfm", controllers.BfmPage())
+	r.GET("/bfm", controllers.StaticPages())
 	r.GET("/bfms", controllers.BfmItemsData())
 }
 
 func PrivateAdminRoutes(r *gin.RouterGroup) {
-	r.GET("/admin", controllers.AdminDashboardPage())
-	r.GET("/report", controllers.ReportPage())
+	r.GET("/admin", controllers.StaticPages())
+
+	r.GET("/report", controllers.StaticPages())
 	r.GET("/report_data/:type/:value", controllers.ReportData())
 
 	r.GET("/users", controllers.UsersData())
-	r.GET("/manageuser", controllers.ManageUserPage())
+	r.GET("/manageuser", controllers.StaticPages())
 	r.POST("/deleteuser", controllers.DeleteUserForm())
 	r.POST("/edituser", controllers.EditUserForm())
 
-	r.GET("/manageoffice", controllers.ManageOfficePage())
+	r.GET("/manageoffice", controllers.StaticPages())
 	r.POST("/addoffice", controllers.AddOfficeForm())
 	r.POST("/deleteoffice", controllers.DeleteOfficeForm())
 	r.POST("/editoffice", controllers.EditOfficeForm())
 
 	r.GET("/packages", controllers.PackagesData())
-	r.GET("/managepackage", controllers.ManagePackagePage())
+	r.GET("/managepackage", controllers.StaticPages())
 	r.POST("/deletepackage", controllers.DeletePackageForm())
 	r.POST("/editpackage", controllers.EditPackageForm())
 
 	r.GET("/pickups", controllers.PickupsData())
-	r.GET("/managepickup", controllers.ManagePickupPage())
+	r.GET("/managepickup", controllers.StaticPages())
 	r.POST("/deletepickup", controllers.DeletePickupForm())
 
 	r.GET("/complaints", controllers.ComplaintData())
-	r.GET("/managecomplaint", controllers.ManageComplaintPage())
+	r.GET("/managecomplaint", controllers.StaticPages())
 	r.POST("/deletecomplaint", controllers.DeleteComplaintsForm())
 }

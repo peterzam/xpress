@@ -10,35 +10,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RequestPickupPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "requestpickup.html", gin.H{
-			"button_text": "Dashboard",
-			"button_link": "dashboard",
-		})
-	}
-}
-
 func RequestPickupForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
-		var p = &models.Pickup{
+		var p = models.Pickup{
 			Size:   c.PostForm("pickup_size"),
 			Type:   c.PostForm("pickup_type"),
 			Note:   c.PostForm("pickup_note"),
 			Src_id: session.Get("user_id").(uint),
 		}
 
-		if utils.DB.Create(p).Error != nil {
+		if utils.DB.Create(&p).Error != nil {
 
-			c.HTML(http.StatusInternalServerError, "message.html", gin.H{
-				"message_heading":     "Error 🤌",
-				"message_text":        "Internal Server Error",
-				"message_button":      "dashboard",
-				"message_button_text": "Go back to Dashboard",
-				"button_text":         "Dashboard",
-				"button_link":         "dashboard",
-			})
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 
@@ -51,6 +35,7 @@ func RequestPickupForm() gin.HandlerFunc {
 		})
 	}
 }
+
 func PickupsData() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -66,47 +51,39 @@ func PickupsData() gin.HandlerFunc {
 		var response []Response
 
 		if utils.DB.Find(&pickups).Error != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 
 		for _, pickup := range pickups {
 			var src_user models.User
 			if utils.DB.Where("id = ?", pickup.Src_id).First(&src_user).Error != nil {
-				c.Redirect(http.StatusTemporaryRedirect, "/503")
+				c.Redirect(http.StatusTemporaryRedirect, "/500")
 				return
 			}
-			var resp Response
-			resp.Id = pickup.Id
-			resp.Note = pickup.Note
-			resp.User_name = src_user.Name
-			resp.User_phone = src_user.Phone
-			resp.User_addr = src_user.Address
-			response = append(response, resp)
+
+			response = append(response, Response{
+				Id:         pickup.Id,
+				Note:       pickup.Note,
+				User_name:  src_user.Name,
+				User_phone: src_user.Phone,
+				User_addr:  src_user.Address,
+			})
 		}
 
 		data, err := json.Marshal(response)
 		if err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 		c.Data(http.StatusOK, gin.MIMEJSON, data)
 	}
 }
 
-func ManagePickupPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "managepickup.html", gin.H{
-			"button_text": "Admin Dashboard",
-			"button_link": "admin",
-		})
-	}
-}
-
 func DeletePickupForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if utils.DB.Where("id = ?", c.PostForm("pickup_id")).Unscoped().Delete(models.Pickup{}).Error != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+		if utils.DB.Where("id = ?", c.PostForm("pickup_id")).Unscoped().Delete(&models.Pickup{}).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 	}

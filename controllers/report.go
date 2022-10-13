@@ -10,15 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ReportPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "report.html", gin.H{
-			"button_text": "Admin Dashboard",
-			"button_link": "admin",
-		})
-	}
-}
-
 func ReportData() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -37,7 +28,7 @@ func ReportData() gin.HandlerFunc {
 
 		data, err := json.Marshal(chart)
 		if err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 		c.Data(http.StatusOK, gin.MIMEJSON, data)

@@ -10,33 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddComplaintPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "complaint.html", gin.H{
-			"button_text": "Dashboard",
-			"button_link": "dashboard",
-		})
-	}
-}
-
 func AddComplaintForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
-		var p = &models.Complaint{
+		var p = models.Complaint{
 			Note:   c.PostForm("note"),
 			Src_id: session.Get("user_id").(uint),
 		}
 
-		if utils.DB.Create(p).Error != nil {
+		if utils.DB.Create(&p).Error != nil {
 
-			c.HTML(http.StatusInternalServerError, "message.html", gin.H{
-				"message_heading":     "Error 🤌",
-				"message_text":        "Internal Server Error",
-				"message_button":      "dashboard",
-				"message_button_text": "Go back to Dashboard",
-				"button_text":         "Dashboard",
-				"button_link":         "dashboard",
-			})
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 
@@ -64,46 +48,37 @@ func ComplaintData() gin.HandlerFunc {
 		var response []Response
 
 		if utils.DB.Find(&complaints).Error != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 
 		for _, complaint := range complaints {
 			var src_user models.User
 			if utils.DB.Where("id = ?", complaint.Src_id).First(&src_user).Error != nil {
-				c.Redirect(http.StatusTemporaryRedirect, "/503")
+				c.Redirect(http.StatusTemporaryRedirect, "/500")
 				return
 			}
-			var resp Response
-			resp.Id = complaint.Id
-			resp.Note = complaint.Note
-			resp.User_name = src_user.Name
-			resp.User_phone = src_user.Phone
-			response = append(response, resp)
+			response = append(response, Response{
+				Id:         complaint.Id,
+				Note:       complaint.Note,
+				User_name:  src_user.Name,
+				User_phone: src_user.Phone,
+			})
 		}
 
 		data, err := json.Marshal(response)
 		if err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 		c.Data(http.StatusOK, gin.MIMEJSON, data)
 	}
 }
 
-func ManageComplaintPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "managecomplaint.html", gin.H{
-			"button_text": "Admin Dashboard",
-			"button_link": "admin",
-		})
-	}
-}
-
 func DeleteComplaintsForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if utils.DB.Where("id = ?", c.PostForm("complaint_id")).Unscoped().Delete(models.Complaint{}).Error != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+		if utils.DB.Where("id = ?", c.PostForm("complaint_id")).Unscoped().Delete(&models.Complaint{}).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 	}

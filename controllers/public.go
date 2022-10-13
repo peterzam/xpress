@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-contrib/sessions"
@@ -18,11 +19,14 @@ func NoRoute() gin.HandlerFunc {
 	}
 }
 
-func ErrorNotFoundPage() gin.HandlerFunc {
+func ErrorPages() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		status_code, _ := strconv.Atoi(c.Request.RequestURI[1:])
+
 		var header = &gin.H{
 			"button_text": "Login",
 			"button_link": "login",
+			"error_code":  status_code,
 		}
 		// Check session if already logged in
 		session := sessions.Default(c)
@@ -30,72 +34,56 @@ func ErrorNotFoundPage() gin.HandlerFunc {
 			header = &gin.H{
 				"button_text": "Dashboard",
 				"button_link": "dashboard",
+				"error_code":  status_code,
 			}
 		}
 
-		c.HTML(http.StatusNotFound, "404.html", header)
-	}
-}
-
-func ErrorInternalServerPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var header = &gin.H{
-			"button_text": "Login",
-			"button_link": "login",
-		}
-		// Check session if already logged in
-		session := sessions.Default(c)
-		if session.Get("user_id") != nil {
-			header = &gin.H{
-				"button_text": "Dashboard",
-				"button_link": "dashboard",
-			}
-		}
-
-		c.HTML(http.StatusInternalServerError, "503.html", header)
-	}
-}
-
-func ErrorUnauthorizedPage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var header = &gin.H{
-			"button_text": "Login",
-			"button_link": "login",
-		}
-		// Check session if already logged in
-		session := sessions.Default(c)
-		if session.Get("user_id") != nil {
-			header = &gin.H{
-				"button_text": "Dashboard",
-				"button_link": "dashboard",
-			}
-		}
-
-		c.HTML(http.StatusUnauthorized, "401.html", header)
+		c.HTML(status_code, "error.html", header)
 	}
 }
 
 func StaticPages() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		session := sessions.Default(c)
+
 		// Login button
 		var header = &gin.H{
 			"button_text": "Login",
 			"button_link": "login",
+			"user_name":   session.Get("user_name"),
 		}
+
 		// Check session if already logged in
-		session := sessions.Default(c)
-		if session.Get("user_id") != nil {
+		switch session.Get("user_role") {
+		case "user":
 			header = &gin.H{
 				"button_text": "Dashboard",
 				"button_link": "dashboard",
+				"user_name":   session.Get("user_name"),
 			}
+
+		case "admin":
+			header = &gin.H{
+				"button_text": "Admin Dashboard",
+				"button_link": "admin",
+				"user_name":   session.Get("user_name"),
+			}
+		}
+
+		// Drop "?"
+		uri := c.Request.RequestURI
+		if uri[len(uri)-1:] == "?" {
+			uri = uri[1 : len(uri)-1]
+		} else {
+			uri = uri[1:]
 		}
 
 		// Controlled route for "/" -> "home.html"
 		if c.Request.RequestURI == "/" {
 			c.HTML(http.StatusOK, "home.html", header)
 		} else {
-			c.HTML(http.StatusOK, fmt.Sprintf("%s.html", c.Request.RequestURI[1:]), header)
+			c.HTML(http.StatusOK, fmt.Sprintf("%s.html", uri), header)
 		}
 	}
 }
@@ -107,7 +95,7 @@ func LoginForm() gin.HandlerFunc {
 		user_password := c.PostForm("user_password")
 		var auth_user models.User
 
-		var invalid_login = &gin.H{
+		var invalid_login = gin.H{
 			"button_text":       "Login",
 			"button_link":       "login",
 			"user_phone_status": "is-invalid",
@@ -118,7 +106,7 @@ func LoginForm() gin.HandlerFunc {
 			return
 		}
 		if utils.GetMD5Hash(user_password) != auth_user.Password {
-			c.HTML(http.StatusOK, "login.html", invalid_login)
+			c.HTML(http.StatusOK, "login.html", &invalid_login)
 			return
 		}
 		session.Set("user_id", auth_user.Id)
@@ -127,16 +115,29 @@ func LoginForm() gin.HandlerFunc {
 		session.Set("user_address", auth_user.Address)
 		session.Set("user_role", auth_user.Role)
 		if err := session.Save(); err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 		c.Redirect(http.StatusMovedPermanently, "/dashboard")
 	}
 }
 
+func Logout() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		session.Clear()
+		session.Options(sessions.Options{Path: "/", MaxAge: -1})
+		if err := session.Save(); err != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
+			return
+		}
+		c.Redirect(http.StatusTemporaryRedirect, "/")
+	}
+}
+
 func RegisterForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var user = &models.User{
+		var user = models.User{
 			Name:     c.PostForm("user_name"),
 			Phone:    c.PostForm("user_phone"),
 			Address:  c.PostForm("user_address"),
@@ -144,7 +145,7 @@ func RegisterForm() gin.HandlerFunc {
 		}
 
 		// Check User Inputs
-		check := utils.CheckUserInputs(*user)
+		check := utils.CheckUserInputs(user)
 		if check != "" {
 			c.HTML(http.StatusOK, "register.html", gin.H{
 				"user_register_status_text": check,
@@ -153,8 +154,8 @@ func RegisterForm() gin.HandlerFunc {
 		}
 
 		user.Password = utils.GetMD5Hash(user.Password)
-		if utils.DB.Create(user).Error != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+		if utils.DB.Create(&user).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 
@@ -162,18 +163,9 @@ func RegisterForm() gin.HandlerFunc {
 	}
 }
 
-func SearchPackagePage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "searchpackage.html", gin.H{
-			"button_text": "Dashboard",
-			"button_link": "dashboard",
-		})
-	}
-}
-
 func SearchPackageForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var pack = &models.Package{
+		var pack = models.Package{
 			Code: c.PostForm("package_code"),
 		}
 		if utils.DB.Where("code = ?", pack.Code).First(&pack).Error != nil {
@@ -185,7 +177,7 @@ func SearchPackageForm() gin.HandlerFunc {
 
 		var src_user models.User
 		if utils.DB.Where("id = ?", pack.Src_id).First(&src_user).Error != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 		var message []string
@@ -205,21 +197,11 @@ func SearchPackageForm() gin.HandlerFunc {
 			"message_heading":     "Package 🎁",
 			"message_text":        message,
 			"message_button":      "dashboard",
-			"message_button_text": "Go back to Dashboard",
+			"message_button_text": "Go back",
 			"button_text":         "Dashboard",
 			"button_link":         "dashboard",
 		})
 
-	}
-}
-
-func OfficePage() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "office.html", gin.H{
-			"button_text": "Login",
-			"button_link": "login",
-			"map_api_key": utils.GetEnv("MAP_API_KEY"),
-		})
 	}
 }
 
@@ -229,12 +211,12 @@ func OfficesData() gin.HandlerFunc {
 		var offices []models.Office
 
 		if utils.DB.Find(&offices).Error != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 		data, err := json.Marshal(offices)
 		if err != nil {
-			c.Redirect(http.StatusTemporaryRedirect, "/503")
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
 		c.Data(http.StatusOK, gin.MIMEJSON, data)
