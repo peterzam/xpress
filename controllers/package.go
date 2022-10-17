@@ -29,6 +29,27 @@ func AllPackagesData() gin.HandlerFunc {
 	}
 }
 
+func UserPackagesData() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		session := sessions.Default(c)
+
+		var packages []models.Package
+
+		if utils.DB.Find(&packages).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
+			return
+		}
+		utils.DB.Model(&models.Package{Src_id: session.Get("user_id").(uint)}).Find(&packages)
+		data, err := json.Marshal(packages)
+		if err != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
+			return
+		}
+		c.Data(http.StatusOK, gin.MIMEJSON, data)
+	}
+}
+
 func AddPackageForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)

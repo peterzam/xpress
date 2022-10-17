@@ -1,0 +1,48 @@
+{{ template "head" . }}
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Packages</h2>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover" id="table">
+                <thead>
+                    <tr>
+                        <th class="w-25">Package Code</th>
+                        <th>Receiver Name</th>
+                        <th>Receiver Address</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    // Get data from backend and display on table
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "/userpackages", false);
+    xmlHttp.send(null);
+    var packages = JSON.parse(xmlHttp.responseText);
+    var table = document.getElementById("table");
+    for (i = 0; i < packages.length; i++) {
+        var row = table.insertRow(1);
+        var col = [
+            row.insertCell(0),
+            row.insertCell(1),
+            row.insertCell(2),
+            row.insertCell(3),
+        ];
+        col[0].innerHTML = packages[i].code;
+        col[1].innerHTML = packages[i].dest_name;
+        col[2].innerHTML = packages[i].dest_addr;
+        col[3].innerHTML = packages[i].status;
+    }
+</script>
+{{ template "foot" }}
