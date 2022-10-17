@@ -30,9 +30,10 @@
     </div>
 
     <div
-    class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center"
->
-    <h2 class="display-4 fw-normal text-white">Offices On Map</h2></div>
+        class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center"
+    >
+        <h2 class="display-4 fw-normal text-white">Offices On Map</h2>
+    </div>
     <div class="map mx-auto" id="googleMap"></div>
 </div>
 <script>
@@ -46,11 +47,7 @@
         var table = document.getElementById("table");
         for (i = 0; i < offices.length; i++) {
             var row = table.insertRow(1);
-            var col = [
-                row.insertCell(0),
-                row.insertCell(1),
-                row.insertCell(2),
-            ];
+            var col = [row.insertCell(0), row.insertCell(1), row.insertCell(2)];
             col[0].innerHTML = offices[i].name;
             col[1].innerHTML = offices[i].address;
             col[2].innerHTML = offices[i].phone;

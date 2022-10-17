@@ -1,63 +1,71 @@
 {{ template "head" . }}
 <section class="h-100">
-  <div class="container h-100">
-    <div class="row justify-content-sm-center h-100">
-      <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-        <div class="card shadow-lg">
-          <div class="card-body p-5">
-            <h1 class="fs-4 card-title fw-bold mb-4">
-              Pickup Request Form
-            </h1>
-            <form method="POST" needs-validation autocomplete="off">
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="pickup_size"
-                  >Package Size</label
-                >
-                <input
-                  id="pickup_size"
-                  type="text"
-                  class="form-control"
-                  name="pickup_size"
-                  value=""
-                  required
-                />
-              </div>
+    <div class="container h-100">
+        <div class="row justify-content-sm-center h-100">
+            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h1 class="fs-4 card-title fw-bold mb-4">
+                            Pickup Request Form
+                        </h1>
+                        <form method="POST" needs-validation autocomplete="off">
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="pickup_size"
+                                    >Package Size</label
+                                >
+                                <input
+                                    id="pickup_size"
+                                    type="text"
+                                    class="form-control"
+                                    name="pickup_size"
+                                    value=""
+                                    required
+                                />
+                            </div>
 
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="pickup_type">Type</label>
-                <select
-                  id="pickup_type"
-                  type="text"
-                  class="form-control"
-                  name="pickup_type"
-                  value=""
-                ><option value="normal">Normal</option>
-                <option value="express">Express</option>
-                <option value="business">Business</option>
-              </select>
-              </div>
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="pickup_type"
+                                    >Type</label
+                                >
+                                <select
+                                    id="pickup_type"
+                                    type="text"
+                                    class="form-control"
+                                    name="pickup_type"
+                                    value=""
+                                >
+                                    <option value="normal">Normal</option>
+                                    <option value="express">Express</option>
+                                    <option value="business">Business</option>
+                                </select>
+                            </div>
 
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="pickup_note">Note</label>
-                <input
-                  id="pickup_note"
-                  type="text"
-                  class="form-control"
-                  name="pickup_note"
-                  value=""
-                />
-              </div>
+                            <div class="mb-3">
+                                <label class="mb-2 text-muted" for="pickup_note"
+                                    >Note</label
+                                >
+                                <input
+                                    id="pickup_note"
+                                    type="text"
+                                    class="form-control"
+                                    name="pickup_note"
+                                    value=""
+                                />
+                            </div>
 
-              <div class="align-items-center d-flex">
-                <button type="submit" class="btn btn-primary ms-auto">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+                            <div class="align-items-center d-flex">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary ms-auto"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 {{ template "foot" }}

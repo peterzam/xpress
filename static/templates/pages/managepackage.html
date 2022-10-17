@@ -8,6 +8,19 @@
                         <h2>Manage <b>Package</b></h2>
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                id="search"
+                                class="form-control"
+                                placeholder="Search"
+                                onkeyup="searchTable()"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
             <table class="table table-striped table-hover" id="table">
                 <thead>
@@ -133,11 +146,13 @@
         col[0].innerHTML = packages[i].code;
         col[1].innerHTML = packages[i].note;
         col[2].innerHTML = packages[i].status;
-        col[3].innerHTML = 
+        col[3].innerHTML =
             `<a href="#editPackageModal" class="edit" type=button data-bs-toggle="modal" data-bs-target="#editPackageModal" title="Edit" data-bs-package_code="` +
             packages[i].code +
-            `" data-bs-package_note="` + packages[i].note +
-            `" data-bs-package_status="` + packages[i].status +
+            `" data-bs-package_note="` +
+            packages[i].note +
+            `" data-bs-package_status="` +
+            packages[i].status +
             `"><i class="material-icons">&#xE254;</i></a>
             <a href="#deletePackageModal" class="delete" type="button" data-bs-toggle="modal" data-bs-target="#deletePackageModal" title="Delete" data-bs-package_code="` +
             packages[i].code +
@@ -151,7 +166,7 @@
         const button = event.relatedTarget;
         code = button.getAttribute("data-bs-package_code");
         const modalTitle = deletePackageModal.querySelector(".modal-title");
-        modalTitle.textContent = `Delete : ` + code ;
+        modalTitle.textContent = `Delete : ` + code;
     });
     const submitDeleteButton = document.getElementById("submitDeleteButton");
     submitDeleteButton.addEventListener("click", (event) => {
@@ -168,8 +183,10 @@
     editPackageModal.addEventListener("show.bs.modal", (event) => {
         const button = event.relatedTarget;
         code = button.getAttribute("data-bs-package_code");
-        editPackageModal.querySelector(".modal-body #package_note").value = button.getAttribute("data-bs-package_note");
-        editPackageModal.querySelector(".modal-body #package_status").value = button.getAttribute("data-bs-package_status");
+        editPackageModal.querySelector(".modal-body #package_note").value =
+            button.getAttribute("data-bs-package_note");
+        editPackageModal.querySelector(".modal-body #package_status").value =
+            button.getAttribute("data-bs-package_status");
     });
 
     const submitEditButton = document.getElementById("submitEditButton");
@@ -182,12 +199,39 @@
         );
         xmlHttp.send(
             "package_code=" +
-            code +
+                code +
                 "&package_note=" +
                 document.getElementById("package_note").value +
                 "&package_status=" +
                 document.getElementById("package_status").value
         );
     });
+
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+
+            if (td.length > 0) {
+                if (
+                    td[0].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[1].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[2].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[3].innerHTML.toUpperCase().indexOf(filter) > -1
+                ) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
 {{ template "foot" }}

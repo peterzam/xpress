@@ -264,3 +264,38 @@ table.table .avatar {
     width: 80%;
     height: 500px;
 }
+
+.is-hidden { display: none; }
+
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 150px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+}

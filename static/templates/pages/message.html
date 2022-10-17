@@ -1,27 +1,25 @@
 {{ template "head" . }}
 <main>
-    <div
-        class="position-relative overflow-hidden p-3 p-md-5 m-md-3"
-    >
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
         <div class="col-md-5 p-lg-5 mx-auto my-5">
             <div class="card shadow-lg">
                 <div class="card-body p-5">
                     <h1 class="fs-4 card-title fw-bold mb-4 text-center">
                         {{ .message_heading }}
                     </h1>
-                    {{ range .message_text }}<hr>
+                    {{ range .message_text }}
+                    <hr />
                     <p class="lead fw-normal text-right">{{ . }}</p>
                     {{ end }}
                     <div class="text-center">
-                         <a
-                        role="button"
-                        class="btn btn-primary ms-auto"
-                        aria-current="page"
-                        href="/{{ .message_button }}"
-                        >{{ .message_button_text }}</a
-                    >
+                        <a
+                            role="button"
+                            class="btn btn-primary ms-auto"
+                            aria-current="page"
+                            href="/{{ .message_button }}"
+                            >{{ .message_button_text }}</a
+                        >
                     </div>
-                   
                 </div>
             </div>
         </div>

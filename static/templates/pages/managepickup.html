@@ -7,6 +7,19 @@
                     <div class="col-sm-6">
                         <h2>Manage <b>Pickups</b></h2>
                     </div>
+                    <div class="col-sm-6">
+                        <div class="search-box">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="search"
+                                    class="form-control"
+                                    placeholder="Search"
+                                    onkeyup="searchTable()"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <table class="table table-striped table-hover" id="table">
@@ -152,5 +165,29 @@
         viewPickupModal.querySelector(".pickup_user_phone").textContent = button.getAttribute("data-bs-pickup_user_phone");
         viewPickupModal.querySelector(".pickup_user_address").textContent = button.getAttribute("data-bs-pickup_user_address");
     });
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+
+            if (td.length > 0) {
+                if (
+                    td[0].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[1].innerHTML.toUpperCase().indexOf(filter) > -1
+                ) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
 {{ template "foot" }}

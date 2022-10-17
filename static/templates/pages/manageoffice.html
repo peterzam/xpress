@@ -4,11 +4,10 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm">
                         <h2>Manage <b>Offices</b></h2>
                     </div>
-
-                    <div class="col-sm-6">
+                    <div class="col-sm">
                         <a
                             href="#addOfficeModal"
                             class="btn btn-success"
@@ -18,6 +17,19 @@
                             title="Add"
                             >Add Office</a
                         >
+                    </div>
+                    <div class="col-sm">
+                        <div class="search-box">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="search"
+                                    class="form-control"
+                                    placeholder="Search"
+                                    onkeyup="searchTable()"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -366,5 +378,31 @@
                 document.getElementById("new_office_location_lng").value
         );
     });
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+
+            if (td.length > 0) {
+                if (
+                    td[0].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[1].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[2].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[3].innerHTML.toUpperCase().indexOf(filter) > -1
+                ) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
 {{ template "foot" }}

@@ -7,6 +7,19 @@
                     <div class="col-sm-6">
                         <h2>Manage <b>Users</b></h2>
                     </div>
+                    <div class="col-sm-6">
+                        <div class="search-box">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="search"
+                                    class="form-control"
+                                    placeholder="Search"
+                                    onkeyup="searchTable()"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <table class="table table-striped table-hover" id="table">
@@ -62,7 +75,6 @@
                         <select class="form-control" id="user_role">
                             <option value="user">user</option>
                             <option value="admin">admin</option>
-                            <option value="inactive">inactive</option>
                         </select>
                     </div>
                 </div>
@@ -148,13 +160,17 @@
         col[4].innerHTML =
             `<a href="#editUserModal" class="edit" type=button data-bs-toggle="modal" data-bs-target="#editUserModal" title="Edit" data-bs-user_name="` +
             users[i].name +
-            `" data-bs-user_address="` + users[i].address +
-            `" data-bs-user_phone="` + users[i].phone +
-            `" data-bs-user_role="` + users[i].role +
+            `" data-bs-user_address="` +
+            users[i].address +
+            `" data-bs-user_phone="` +
+            users[i].phone +
+            `" data-bs-user_role="` +
+            users[i].role +
             `"><i class="material-icons">&#xE254;</i></a>
             <a href="#deleteUserModal" class="delete" type="button" data-bs-toggle="modal" data-bs-target="#deleteUserModal" title="Delete" data-bs-user_name="` +
             users[i].name +
-            `" data-bs-user_phone="` + users[i].phone +
+            `" data-bs-user_phone="` +
+            users[i].phone +
             `"><i class="material-icons" >&#xE872;</i></a>`;
     }
 
@@ -165,7 +181,8 @@
         const button = event.relatedTarget;
         phone = button.getAttribute("data-bs-user_phone");
         const modalTitle = deleteUserModal.querySelector(".modal-title");
-        modalTitle.textContent = `Delete : ` + button.getAttribute("data-bs-user_name");
+        modalTitle.textContent =
+            `Delete : ` + button.getAttribute("data-bs-user_name");
     });
     const submitDeleteButton = document.getElementById("submitDeleteButton");
     submitDeleteButton.addEventListener("click", (event) => {
@@ -178,18 +195,22 @@
         xmlHttp.send("user_phone=" + phone);
 
         if (xmlHttp.status != 200) {
-            alert("This user has related packages, pickups or complaints. Delete them first")
+            alert(
+                "This user has related packages, pickups or complaints. Delete them first"
+            );
         }
-
     });
 
     const editUserModal = document.getElementById("editUserModal");
     editUserModal.addEventListener("show.bs.modal", (event) => {
         const button = event.relatedTarget;
         phone = button.getAttribute("data-bs-user_phone");
-        editUserModal.querySelector(".modal-body #user_name").value = button.getAttribute("data-bs-user_name");
-        editUserModal.querySelector(".modal-body #user_address").value = button.getAttribute("data-bs-user_address");
-        editUserModal.querySelector(".modal-body #user_role").value = button.getAttribute("data-bs-user_role");
+        editUserModal.querySelector(".modal-body #user_name").value =
+            button.getAttribute("data-bs-user_name");
+        editUserModal.querySelector(".modal-body #user_address").value =
+            button.getAttribute("data-bs-user_address");
+        editUserModal.querySelector(".modal-body #user_role").value =
+            button.getAttribute("data-bs-user_role");
     });
 
     const submitEditButton = document.getElementById("submitEditButton");
@@ -202,7 +223,7 @@
         );
         xmlHttp.send(
             "user_name=" +
-            document.getElementById("user_name").value +
+                document.getElementById("user_name").value +
                 "&user_address=" +
                 document.getElementById("user_address").value +
                 "&user_role=" +
@@ -211,5 +232,33 @@
                 phone
         );
     });
+
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+
+            if (td.length > 0) {
+                if (
+                    td[0].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[1].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[2].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[3].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[4].innerHTML.toUpperCase().indexOf(filter) > -1
+                ) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
 {{ template "foot" }}
