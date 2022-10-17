@@ -96,7 +96,7 @@ func PrivateAdminRoutes(r *gin.RouterGroup) {
 	r.POST("/deleteoffice", controllers.DeleteOfficeForm())
 	r.POST("/editoffice", controllers.EditOfficeForm())
 
-	r.GET("/allpackages", controllers.PackagesData())
+	r.GET("/allpackages", controllers.AllPackagesData())
 	r.GET("/managepackage", controllers.StaticPages())
 	r.POST("/deletepackage", controllers.DeletePackageForm())
 	r.POST("/editpackage", controllers.EditPackageForm())

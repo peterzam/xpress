@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func PackagesData() gin.HandlerFunc {
+func AllPackagesData() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		var packages []models.Package
