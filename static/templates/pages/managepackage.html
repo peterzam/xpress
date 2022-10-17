@@ -118,7 +118,7 @@
 <script>
     // Get data from backend and display on table
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "/packages", false);
+    xmlHttp.open("GET", "/allpackages", false);
     xmlHttp.send(null);
     var packages = JSON.parse(xmlHttp.responseText);
     var table = document.getElementById("table");
