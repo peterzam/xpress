@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RequestPickupForm() gin.HandlerFunc {
+func AddPickupForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		var p = models.Pickup{

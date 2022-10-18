@@ -55,5 +55,6 @@ type Bfmitem struct {
 	Id    uint   `json:"id" gorm:"primaryKey;autoIncrement"`
 	Name  string `json:"name" gorm:"type:varchar(30);not null"`
 	Price string `json:"price" gorm:"type:varchar(20);not null"`
+	Size  string `json:"size" gorm:"type:varchar(50);not null"`
 	Note  string `json:"note" gorm:"type:varchar(50)"`
 }

@@ -1,0 +1,198 @@
+{{ template "head" . }}
+<div class="container-xl">
+    <div
+        class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center"
+    >
+        <h1 class="display-4 fw-normal text-white">Buy for me</h1>
+    </div>
+
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Available Items</h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="search-box">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="search"
+                                    class="form-control"
+                                    placeholder="Search"
+                                    onkeyup="searchTable()"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover" id="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Size</th>
+                        <th>Note</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal HTML -->
+<div id="addBfmitemModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Order/Add Item</h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        Name :
+                        <div class="bfmitem_name"></div>
+                        <br />
+                        Price :
+                        <div class="bfmitem_price"></div>
+                        <br />
+                        Size :
+                        <div class="bfmitem_size"></div>
+                        <br />
+                        Detail :
+                        <div class="bfmitem_note"></div>
+                        <br />
+                        <label>Note</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="bfmitem_user_note"
+                        />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        id="submitAddButton"
+                    >
+                        Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // GET request to Endpoint, get bfmitems
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "/bfms", false);
+    xmlHttp.send(null);
+    var bfmitems = JSON.parse(xmlHttp.responseText);
+    var table = document.getElementById("table");
+    for (i = 0; i < bfmitems.length; i++) {
+        var row = table.insertRow(1);
+        var col = [
+            row.insertCell(0),
+            row.insertCell(1),
+            row.insertCell(2),
+            row.insertCell(3),
+            row.insertCell(4),
+        ];
+        col[0].innerHTML = bfmitems[i].name;
+        col[1].innerHTML = bfmitems[i].price;
+        col[2].innerHTML = bfmitems[i].size;
+        col[3].innerHTML = bfmitems[i].note;
+        col[4].innerHTML =
+            `<a href="#addBfmitemModal" class="edit" type=button data-bs-toggle="modal" data-bs-target="#addBfmitemModal" title="Add" data-bs-bfmitem_id="` +
+            bfmitems[i].id +
+            `" data-bs-bfmitem_name="` +
+            bfmitems[i].name +
+            `" data-bs-bfmitem_price="` +
+            bfmitems[i].price +
+            `" data-bs-bfmitem_size="` +
+            bfmitems[i].size +
+            `" data-bs-bfmitem_note="` +
+            bfmitems[i].note +
+            `"><i class="material-icons">&#xE8f4;</i></a>`;
+    }
+
+    var id;
+
+    const addBfmitemModal = document.getElementById("addBfmitemModal");
+    addBfmitemModal.addEventListener("show.bs.modal", (event) => {
+        const button = event.relatedTarget;
+        id = button.getAttribute("data-bs-bfmitem_id");
+        addBfmitemModal.querySelector(".bfmitem_name").textContent =
+            button.getAttribute("data-bs-bfmitem_name");
+        addBfmitemModal.querySelector(".bfmitem_price").textContent =
+            button.getAttribute("data-bs-bfmitem_price");
+        addBfmitemModal.querySelector(".bfmitem_size").textContent =
+            button.getAttribute("data-bs-bfmitem_size");
+        addBfmitemModal.querySelector(".bfmitem_note").textContent =
+            button.getAttribute("data-bs-bfmitem_note");
+    });
+
+    const submitAddButton = document.getElementById("submitAddButton");
+    submitAddButton.addEventListener("click", (event) => {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", "/addbfm", false);
+        xmlHttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+        );
+        xmlHttp.send(
+            "bfmitem_user_note=" +
+                document.getElementById("bfmitem_user_note").value +
+                "&bfmitem_id=" +
+                id
+        );
+    });
+
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+
+            if (td.length > 0) {
+                if (
+                    td[0].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[1].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[2].innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                    td[3].innerHTML.toUpperCase().indexOf(filter) > -1
+                ) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+{{ template "foot" }}

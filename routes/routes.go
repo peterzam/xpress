@@ -61,6 +61,8 @@ func PublicRoutes(r *gin.RouterGroup) {
 
 	r.GET("/searchpackage", controllers.StaticPages())
 	r.POST("/searchpackage", controllers.SearchPackageForm())
+	r.GET("/package", controllers.ShowPackage())
+	// r.GET("/searchpackage", controllers.ShowPackage())
 }
 
 func PrivateUserRoutes(r *gin.RouterGroup) {
@@ -70,14 +72,15 @@ func PrivateUserRoutes(r *gin.RouterGroup) {
 	r.GET("/addpackage", controllers.StaticPages())
 	r.POST("/addpackage", controllers.AddPackageForm())
 
-	r.GET("/requestpickup", controllers.StaticPages())
-	r.POST("/requestpickup", controllers.RequestPickupForm())
+	r.GET("/addpickup", controllers.StaticPages())
+	r.POST("/addpickup", controllers.AddPickupForm())
 
 	r.GET("/addcomplaint", controllers.StaticPages())
 	r.POST("/addcomplaint", controllers.AddComplaintForm())
 
-	r.GET("/bfm", controllers.StaticPages())
+	r.GET("/addbfm", controllers.StaticPages())
 	r.GET("/bfms", controllers.BfmItemsData())
+	r.POST("/addbfm", controllers.AddBfmForm())
 }
 
 func PrivateAdminRoutes(r *gin.RouterGroup) {

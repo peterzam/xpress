@@ -49,19 +49,12 @@ CREATE TABLE complaints(
     FOREIGN KEY (src_id) REFERENCES users(id)
 );
 
--- CREATE TABLE bfms(
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     note VARCHAR(50),
---     bfm_item_id INT,
---     FOREIGN KEY (bfm_item_id) REFERENCES bfm_items(id),
---     src_id INT,
---     FOREIGN KEY (src_id) REFERENCES users(id)
--- );
 
 CREATE TABLE bfmitems(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     price VARCHAR(20) NOT NULL,
+    size VARCHAR(50) NOT NULL,
     note VARCHAR(50)
 );
 
@@ -81,9 +74,9 @@ INSERT INTO complaints(note, src_id) VALUES
 ('Slow support', 4),
 ('Configurable multimedia migration', 3);
 
-INSERT INTO bfmitems(name, price, note) VALUES
-('Apple', '1000mmk', 'Function-based impactful support'),
-('Orange', '2000mmk', 'Configurable multimedia migration');
+INSERT INTO bfmitems(name, price, size, note) VALUES
+('Apple','1000mmk','20cm','Function-based impactful support'),
+('Orange','2000mmk','30cm','Configurable multimedia migration');
 
 
 INSERT INTO offices(name, location_lat, location_lng, address, phone) VALUES
