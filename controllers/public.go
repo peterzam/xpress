@@ -205,6 +205,39 @@ func SearchPackageForm() gin.HandlerFunc {
 	}
 }
 
+func PackageData() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		type Message struct {
+			Package        models.Package
+			Sender_Name    string `json:"sender_name"`
+			Sender_Address string `json:"sender_address"`
+		}
+		var pack = models.Package{
+			Code: c.Query("code"),
+		}
+		if utils.DB.Where("code = ?", pack.Code).First(&pack).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/404")
+			return
+		}
+		var src_user models.User
+		if utils.DB.Where("id = ?", pack.Src_id).First(&src_user).Error != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
+			return
+		}
+		data, err := json.Marshal(&Message{
+			Package:        pack,
+			Sender_Name:    src_user.Name,
+			Sender_Address: src_user.Address,
+		})
+		if err != nil {
+			c.Redirect(http.StatusTemporaryRedirect, "/500")
+			return
+		}
+		c.Data(http.StatusOK, gin.MIMEJSON, data)
+
+	}
+}
+
 func OfficesData() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
