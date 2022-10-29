@@ -2,4 +2,3 @@ note
 db/
 dist
 .env
-Makefile
