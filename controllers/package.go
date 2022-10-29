@@ -40,7 +40,7 @@ func UserPackagesData() gin.HandlerFunc {
 			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
-		utils.DB.Model(&models.Package{Src_id: session.Get("user_id").(uint)}).Find(&packages)
+		utils.DB.Where("src_id = ?", session.Get("user_id").(uint)).Find(&packages)
 		data, err := json.Marshal(packages)
 		if err != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/500")
