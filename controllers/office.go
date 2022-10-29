@@ -44,7 +44,7 @@ func EditOfficeForm() gin.HandlerFunc {
 			Location_lat: c.PostForm("office_location_lat"),
 			Location_lng: c.PostForm("office_location_lng"),
 		}
-		if utils.DB.Model(&models.Office{}).Where("id = ?", c.PostForm("office_id")).Updates(&auth_office).Error != nil {
+		if utils.DB.Where("id = ?", c.PostForm("office_id")).Updates(&auth_office).Error != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}

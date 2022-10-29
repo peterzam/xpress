@@ -99,7 +99,7 @@ func EditPackageForm() gin.HandlerFunc {
 			Note:   c.PostForm("package_note"),
 			Status: c.PostForm("package_status"),
 		}
-		if utils.DB.Model(&models.Package{}).Where("code = ?", c.PostForm("package_code")).Updates(&auth_package).Error != nil {
+		if utils.DB.Where("code = ?", c.PostForm("package_code")).Updates(&auth_package).Error != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}

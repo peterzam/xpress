@@ -46,7 +46,7 @@ func EditUserForm() gin.HandlerFunc {
 			Role:    c.PostForm("user_role"),
 		}
 
-		if utils.DB.Model(&models.User{}).Where("phone = ?", c.PostForm("user_phone")).Updates(&auth_user).Error != nil {
+		if utils.DB.Where("phone = ?", c.PostForm("user_phone")).Updates(&auth_user).Error != nil {
 			c.Redirect(http.StatusTemporaryRedirect, "/500")
 			return
 		}
