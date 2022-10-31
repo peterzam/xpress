@@ -18,6 +18,7 @@ builds:
 archives:
   - files:
       - static/**/**/*
+      - static/**/*
       - init-db.sql
       - .env.example
       - LICENSE
