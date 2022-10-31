@@ -59,12 +59,12 @@ CREATE TABLE bfmitems(
 );
 
 INSERT INTO users (phone, name, address, password, role) VALUES
-('00000000','Admin','Yangon Main Street','dd4b21e9ef71e1291183a46b913ae6f2','admin'),
-('11111111','Aung Aung','Mandalay Second Street','1bbd886460827015e5d605ed44252251','user'),
-('22222222','Bo Bo','Yangon 3rd Street','bae5e3208a3c700e3db642b6631e95b9','user'),
-('33333333','Chan Chan','Mandalay Block 1','d27d320c27c3033b7883347d8beca317','admin'),
-('44444444','Daung Daung','Yangon Block 2','b857eed5c9405c1f2b98048aae506792','user'),
-('55555555','Daung Daung','Pyin Oo Lwin, Orchid Street','f638f4354ff089323d1a5f78fd8f63ca','admin');;
+('09000000','Admin','Yangon Main Street','dd4b21e9ef71e1291183a46b913ae6f2','admin'),
+('09111111','Aung Aung','Mandalay Second Street','1bbd886460827015e5d605ed44252251','user'),
+('09222222','Bo Bo','Yangon 3rd Street','bae5e3208a3c700e3db642b6631e95b9','user'),
+('09333333','Chan Chan','Mandalay Block 1','d27d320c27c3033b7883347d8beca317','admin'),
+('09444444','Daung Daung','Yangon Block 2','b857eed5c9405c1f2b98048aae506792','user'),
+('09555555','Daung Daung','Pyin Oo Lwin, Orchid Street','f638f4354ff089323d1a5f78fd8f63ca','admin');;
 
 INSERT INTO pickups(size, type, note, src_id) VALUES
 ('2XL', 'normal', 'Function-based impactful support', 3),
