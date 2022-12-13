@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"Xpress/controllers"
-	"Xpress/utils"
+	"xpress/controllers"
+	"xpress/utils"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"

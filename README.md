@@ -1,4 +1,4 @@
-# Xpress
+# xpress
 
 ## How to run:
 
@@ -35,7 +35,7 @@ podman run -itd --rm \
 	-p 3306:3306 \
 	mariadb
 ```
-- Run `./Xpress`
+- Run `./xpress`
 
 --- 
 

@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"Xpress/models"
 	"math/rand"
 	"time"
+	"xpress/models"
 
 	"github.com/spf13/viper"
 )

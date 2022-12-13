@@ -21,7 +21,7 @@ db-clean:
 	rm -rf db/*
 
 server-up:
-	./Xpress
+	./xpress
 
 clean:
 	rm -rf db/*

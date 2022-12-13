@@ -1,9 +1,9 @@
 package main
 
 import (
-	"Xpress/routes"
-	"Xpress/utils"
 	"fmt"
+	"xpress/routes"
+	"xpress/utils"
 
 	"github.com/gin-gonic/gin"
 )

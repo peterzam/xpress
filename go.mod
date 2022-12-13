@@ -1,4 +1,4 @@
-module Xpress
+module xpress
 
 go 1.19
 

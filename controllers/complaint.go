@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"Xpress/models"
-	"Xpress/utils"
 	"encoding/json"
 	"net/http"
+	"xpress/models"
+	"xpress/utils"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
