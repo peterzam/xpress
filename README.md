@@ -1,50 +1,20 @@
 # xpress
 
-## Checkout [images branch](https://codeberg.org/peterzam/xpress/src/branch/main) for website image demo
-## How to run:
+## Demo Site Images
 
-### Go + Container for Database
-- Dependencies : `podman/docker(container)`, `Golang`
-- Write `.env` file using `.env.example`
-- Run 
-``` bash
-podman run -itd --rm \
-	--name xpress-db \
-	--userns keep-id \
-	--env-file ./.env \
-	--volume ./db:/var/lib/mysql \
-	--volume ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql \
-	-p 3306:3306 \
-	mariadb
-```
-- Run `go run .`
-
----
-
-### Binary + Container for Database
-- Dependencies : `podman/docker(container)`
-- Download Archive from releases and extract
-- Write `.env` file using `.env.example` in the folder
-- Run 
-``` bash
-podman run -itd --rm \
-	--name xpress-db \
-	--userns keep-id \
-	--env-file ./.env \
-	--volume ./db:/var/lib/mysql \
-	--volume ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql \
-	-p 3306:3306 \
-	mariadb
-```
-- Run `./xpress`
-
---- 
-
-### Run both website & database in Container
-- Soon
-
----
-
-***Disclaimer : This is personal project. Do not use in production.***
-
-***Beware : The License is AGPLv3***
+![add_package.png](./images/guide/add_package.png)
+![admin_dashboard.png](./images/guide/admin_dashboard.png)
+![edit_package.png](./images/guide/edit_package.png)
+![home_page.png](./images/guide/home_page.png)
+![login_page.png](./images/guide/login_page.png)
+![manage_package.png](./images/guide/manage_package.png)
+![register_page.png](./images/guide/register_page.png)
+![search_package.png](./images/guide/search_package.png)
+![user_dashboard.png](./images/guide/user_dashboard.png)
+![form_add_package.png](./images/form/form_add_package.png)
+![form_complaint.png](./images/form/form_complaint.png)
+![form_login.png](./images/form/form_login.png)
+![form_register.png](./images/form/form_register.png)
+![form_report_monthly.png](./images/form/form_report_monthly.png)
+![form_report_yearly.png](./images/form/form_report_yearly.png)
+![form_search_package.png](./images/form/form_search_package.png)
